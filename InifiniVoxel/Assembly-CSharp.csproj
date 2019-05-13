@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Assets\InfiniVoxel\Scripts\Attributes\EnumFlagsAttribute.cs" />
     <Compile Include="Assets\InfiniVoxel\Scripts\Brush\VoxelBrush.cs" />
+    <Compile Include="Assets\InfiniVoxel\Scripts\Buffers\ChunkModification.cs" />
     <Compile Include="Assets\InfiniVoxel\Scripts\Buffers\UV0.cs" />
     <Compile Include="Assets\InfiniVoxel\Scripts\Buffers\Vertex.cs" />
     <Compile Include="Assets\InfiniVoxel\Scripts\Buffers\Voxel.cs" />
@@ -72,9 +73,12 @@
     <Compile Include="Assets\InfiniVoxel\Scripts\Components\ChunkScale.cs" />
     <Compile Include="Assets\InfiniVoxel\Scripts\Components\TriangulateChunk.cs" />
     <Compile Include="Assets\InfiniVoxel\Scripts\CustomWorldInitializer.cs" />
+    <Compile Include="Assets\InfiniVoxel\Scripts\MonoBehaviours\VoxelObject.cs" />
+    <Compile Include="Assets\InfiniVoxel\Scripts\MonoBehaviours\VoxelPalette.cs" />
+    <Compile Include="Assets\InfiniVoxel\Scripts\MonoBehaviours\VoxelWorld.cs" />
     <Compile Include="Assets\InfiniVoxel\Scripts\Systems\ChunkApplyMeshSystem.cs" />
+    <Compile Include="Assets\InfiniVoxel\Scripts\Systems\ChunkReplayVoxelBufferSystem.cs" />
     <Compile Include="Assets\InfiniVoxel\Scripts\Systems\ChunkTriangulationSystem.cs" />
-    <Compile Include="Assets\InfiniVoxel\Scripts\VoxelWorld.cs" />
     <Compile Include="Assets\Landfill\Scripts\Raycast.cs" />
     <None Include="Assets\InfiniVoxel\Shaders\Block.shader" />
     <Reference Include="Unity.Timeline.Editor">

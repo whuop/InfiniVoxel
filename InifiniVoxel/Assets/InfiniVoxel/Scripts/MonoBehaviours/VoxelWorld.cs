@@ -8,7 +8,7 @@ using Unity.Transforms;
 using UnityEngine;
 
 
-namespace InfiniVoxel
+namespace InfiniVoxel.MonoBehaviours
 {
     public class VoxelWorld : MonoBehaviour
     {
@@ -49,6 +49,7 @@ namespace InfiniVoxel
             CreateChunk(new ChunkIndex { X = 0, Y = 0, Z = 1 });
             CreateChunk(new ChunkIndex { X = 0, Y = 0, Z = -1 });*/
 
+            //PlaceVoxel(new float3(0, 0, 0), new Voxel { Transparent = 0, Type = 1 });
             //PlaceVoxel(new Vector3(0, 15, 3), new Voxel { Transparent = 0, Type = 3 });
         }
 
@@ -64,6 +65,7 @@ namespace InfiniVoxel
             var entity = entityManager.CreateEntity();
             m_createdChunks.Add(index, entity);
             entityManager.SetName(entity, string.Format("Chunk_{0}_{1}_{2}", index.X, index.Y, index.Z));
+            entityManager.AddBuffer<ChunkModification>(entity);
             entityManager.AddBuffer<Voxel>(entity);
             entityManager.AddBuffer<Vertex>(entity);
             entityManager.AddBuffer<Index>(entity);
@@ -131,7 +133,6 @@ namespace InfiniVoxel
                 Mathf.FloorToInt(worldPosition.y / m_chunkHeight),
                 Mathf.FloorToInt(worldPosition.z / m_chunkDepth)
                 );
-            Debug.LogFormat("Chunk {0}:{1}:{2}", chunkIndex.x, chunkIndex.y, chunkIndex.z);
 
             ChunkIndex cIndex = new ChunkIndex { X = chunkIndex.x, Y = chunkIndex.y, Z = chunkIndex.z };
             if (!m_createdChunks.ContainsKey(cIndex))
@@ -155,21 +156,17 @@ namespace InfiniVoxel
                 Mathf.FloorToInt(localPos.z)
                 );
 
-            Debug.LogFormat("Voxel {0}:{1}:{2}", localPos.x, localPos.y, localPos.z);
-
             //  Set the supplied voxel at the voxel index of the chunk.
             int flatVoxelIndex = voxelIndex.x + m_chunkWidth * (voxelIndex.y + m_chunkDepth * voxelIndex.z);
-            Debug.LogFormat("VoxelIndex {0}", flatVoxelIndex);
 
             Entity chunkEntity = m_createdChunks[cIndex];
-            var voxelBuffer = world.EntityManager.GetBuffer<Voxel>(chunkEntity);
-            voxelBuffer[flatVoxelIndex] = voxel;
+            var voxelBuffer = world.EntityManager.GetBuffer<ChunkModification>(chunkEntity);
 
-            //  Trigger retriangulation.
-            if (!world.EntityManager.HasComponent<TriangulateChunk>(chunkEntity))
+            voxelBuffer.Add(new ChunkModification
             {
-                world.EntityManager.AddComponentData(chunkEntity, new TriangulateChunk());
-            }
+                FlatVoxelIndex = flatVoxelIndex,
+                Voxel = voxel
+            });
         }
     }
 }

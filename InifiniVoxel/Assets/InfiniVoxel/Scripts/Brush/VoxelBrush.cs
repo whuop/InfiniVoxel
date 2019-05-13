@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using InfiniVoxel.MonoBehaviours;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -29,19 +30,16 @@ namespace InfiniVoxel.Brush
 
             if (hit.SurfaceNormal.Equals(float3.zero))
             {
-                Debug.Log("No Collision!");
             }
             else
             {
                 if (Input.GetMouseButtonDown(0))
                 {
                     m_voxelWorld.PlaceVoxel(hit.Position + hit.SurfaceNormal * 0.1f, new Buffers.Voxel { Transparent = 0, Type = 3 });
-                    Debug.Log("Adding Voxels");
                 }
                 if (Input.GetMouseButtonDown(1))
                 {
                     m_voxelWorld.PlaceVoxel(hit.Position - hit.SurfaceNormal * 0.1f, new Buffers.Voxel { Transparent = 1, Type = 0 });
-                    Debug.Log("Removing Voxels");
                 }
                     
                 //Debug.Log("Collision Normal: " + hit.SurfaceNormal);

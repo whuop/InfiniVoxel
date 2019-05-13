@@ -86,7 +86,7 @@ namespace InfiniVoxel.Systems
                 }
 
                 float tileSize = (1.0f / 16.0f);
-
+                
                 for(int i = 0; i < voxelUVs.Length; i++)
                 {
                     if (voxel.Type == 1)
@@ -397,7 +397,6 @@ namespace InfiniVoxel.Systems
                         }
                     }
 
-                    Debug.Log("Triangulating Chunk!");
                     CommandBuffer.RemoveComponent<TriangulateChunk>(chunkIndex, entity);
                     CommandBuffer.AddComponent(chunkIndex, entity, new ApplyMesh());
                 }

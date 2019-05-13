@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace InfiniVoxel.Buffers
 {
+    [System.Serializable]
     public struct Voxel : IBufferElementData
     {
         public int Type;

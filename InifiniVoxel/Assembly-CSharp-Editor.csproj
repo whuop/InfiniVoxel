@@ -63,6 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\InfiniVoxel\Scripts\Editor\Drawers\EnumFlagsAttributeDrawer.cs" />
+    <Compile Include="Assets\InfiniVoxel\Scripts\Editor\Inspectors\VoxelPaletteEditor.cs" />
+    <None Include="Assets\InfiniVoxel\Editor\UI\VoxelPaletteEditor.uxml" />
+    <None Include="Assets\InfiniVoxel\Editor\UI\VoxelPaletteStyles.uss" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>G:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

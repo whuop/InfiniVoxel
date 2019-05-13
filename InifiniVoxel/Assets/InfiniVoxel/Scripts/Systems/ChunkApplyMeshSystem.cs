@@ -62,14 +62,8 @@ namespace InfiniVoxel.Systems
                 var mesh = renderMesh.mesh;
                 mesh.Clear();
 
-                Debug.LogErrorFormat("VertCount:{0} UVCount:{1}", vertices.Length, uv0.Length);
-
-                if (vertices.Length != uv0.Length)
-                    Debug.LogError("Mismatch Vert/UV. Vert Count: " + vertices.Length + " UV count: " + uv0.Length);
-
                 mesh.SetVertices(new List<Vector3>(vertices));
                 mesh.SetIndices(indices, MeshTopology.Triangles, 0);
-                //mesh.SetTriangles(indices, 0);
                 mesh.SetUVs(0, new List<Vector2>(uv0));
                 mesh.RecalculateNormals();
                 mesh.RecalculateBounds();
