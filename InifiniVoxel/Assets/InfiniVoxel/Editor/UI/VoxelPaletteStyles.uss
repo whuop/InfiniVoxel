@@ -1,0 +1,11 @@
+.palette-row{
+    flex-direction:row;
+    justify-content:center;
+    background-color: #313131;
+    margin-bottom: 2px;
+}
+
+.palette-viewport{
+    width:180px;
+    height:180px;
+}

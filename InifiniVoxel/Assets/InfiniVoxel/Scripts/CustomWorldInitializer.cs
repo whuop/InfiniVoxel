@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
 using System;
 using System.Linq;
 using InfiniVoxel.Attributes;
-/*
+
 namespace InfiniVoxel
 {
     [Flags]
@@ -24,10 +24,15 @@ namespace InfiniVoxel
 
         private Dictionary<BootStrapType, World> m_worlds = new Dictionary<BootStrapType, World>();
 
+        private void Awake()
+        {
+            //CustomWorldBootStrap.Bootstrap(m_bootstrapType, m_worlds);
+        }
+
         // Start is called before the first frame update
         void Start()
         {
-            CustomWorldBootStrap.Bootstrap(m_bootstrapType, m_worlds);
+            
         }
     }
 
@@ -57,7 +62,8 @@ namespace InfiniVoxel
 
             if (!isDefaultWorld)
             {
-                bootstrap.AddRange(systems.Where((t) => t.Namespace.Contains(world.Name)));
+                var systemsToBoostrap = systems.Where((t) => t.Name.Contains(world.Name));
+                bootstrap.AddRange(systemsToBoostrap.ToArray());
             }
             else
             {
@@ -67,6 +73,4 @@ namespace InfiniVoxel
             return bootstrap;
         }
     }
-}
-
-    */
+}*/

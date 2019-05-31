@@ -1,0 +1,5 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <VisualElement class="palette-row">
+        <VisualElement name="Color" class="voxel-preview" />
+    </VisualElement>
+</UXML>
