@@ -39,9 +39,13 @@ namespace InfiniVoxel.MonoBehaviours
 
         private NativeArray<Voxel> m_emptyChunk;
 
+        private World m_world;
+
         private void Awake()
         {
             m_emptyChunk = new NativeArray<Voxel>(m_chunkWidth * m_chunkHeight * m_chunkDepth, Allocator.Persistent, NativeArrayOptions.ClearMemory);
+            
+            m_world = World.All[0];
         }
 
         // Start is called before the first frame update
@@ -99,7 +103,7 @@ namespace InfiniVoxel.MonoBehaviours
 
         public void InitializeChunkData(Entity entity)
         {
-            var entityManager = World.Active.EntityManager;
+            var entityManager = m_world.EntityManager;
             var voxels = entityManager.GetBuffer<Voxel>(entity);
             //  Set up voxel test data
             for (int x = 0; x < m_chunkWidth; x++)
@@ -139,7 +143,7 @@ namespace InfiniVoxel.MonoBehaviours
                 return default(Entity);
             }
 
-            var entityManager = World.Active.EntityManager;
+            var entityManager = m_world.EntityManager;
             var entity = entityManager.CreateEntity();
             m_createdChunks.Add(index, entity);
             entityManager.SetName(entity, string.Format("Chunk_{0}_{1}_{2}", index.X, index.Y, index.Z));
@@ -175,7 +179,7 @@ namespace InfiniVoxel.MonoBehaviours
 
         public void PlaceVoxel(int x, int y, int z, Voxel voxel)
         {
-            var world = World.Active;
+            var world = m_world;
             if (world == null)
             {
                 Debug.LogError("Could not PlaceVoxel, no active ECS World found!");
@@ -216,7 +220,7 @@ namespace InfiniVoxel.MonoBehaviours
 
         public void PlaceVoxel(float3 worldPosition, Voxel voxel)
         {
-            var world = World.Active;
+            var world = m_world;
             if (world == null)
             {
                 Debug.LogError("Could not PlaceVoxel, no active ECS World found!");

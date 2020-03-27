@@ -53,11 +53,11 @@ namespace InfiniVoxel.Systems
         private EntityQuery m_entityQuery;
         private EndInitializationEntityCommandBufferSystem m_barrier;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
             m_entityQuery = GetEntityQuery(ComponentType.ReadWrite<Voxel>(), ComponentType.ReadWrite<ChunkModification>(),
-                                            ComponentType.Exclude<ApplyMesh>(), ComponentType.Exclude<TriangulateChunk>());
+                ComponentType.Exclude<ApplyMesh>(), ComponentType.Exclude<TriangulateChunk>());
             m_barrier = World.GetOrCreateSystem<EndInitializationEntityCommandBufferSystem>();
         }
 

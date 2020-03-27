@@ -26,7 +26,7 @@ namespace InfiniVoxel.Brush
             Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             float3 toPos = cameraPos + (float3)mouseRay.direction * m_brushLength;
 
-            var hit = Landfill.Raycast.ResultAsHit(cameraPos, toPos);
+            var hit = Landfill.Raycast.ResultAsHit(World.All[0],cameraPos, toPos);
 
             if (hit.SurfaceNormal.Equals(float3.zero))
             {

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Repos\InfiniVoxel\InifiniVoxel" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="InfiniVoxel" t="Include">
+          <e p="Editor" t="Include">
+            <e p="Importers" t="Include">
+              <e p="VoxImporter.cs" t="Include" />
+            </e>
+            <e p="UI" t="Include">
+              <e p="VoxelPaletteEditor.uxml" t="Include" />
+              <e p="VoxelPaletteStyles.uss" t="Include" />
+            </e>
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="Attributes" t="Include">
+              <e p="EnumFlagsAttribute.cs" t="Include" />
+            </e>
+            <e p="Brush" t="Include">
+              <e p="VoxelBrush.cs" t="Include" />
+            </e>
+            <e p="Buffers" t="Include">
+              <e p="ChunkModification.cs" t="Include" />
+              <e p="UV0.cs" t="Include" />
+              <e p="Vertex.cs" t="Include" />
+              <e p="Voxel.cs" t="Include" />
+            </e>
+            <e p="Components" t="Include">
+              <e p="ApplyMesh.cs" t="Include" />
+              <e p="ChunkIndex.cs" t="Include" />
+              <e p="ChunkScale.cs" t="Include" />
+              <e p="TriangulateChunk.cs" t="Include" />
+            </e>
+            <e p="CustomWorldInitializer.cs" t="Include" />
+            <e p="Editor" t="Include">
+              <e p="Drawers" t="Include">
+                <e p="EnumFlagsAttributeDrawer.cs" t="Include" />
+              </e>
+              <e p="Inspectors" t="Include">
+                <e p="VoxelPaletteEditor.cs" t="Include" />
+              </e>
+            </e>
+            <e p="MonoBehaviours" t="Include">
+              <e p="VoxelObject.cs" t="Include" />
+              <e p="VoxelWorld.cs" t="Include" />
+            </e>
+            <e p="ScriptableObjects" t="Include">
+              <e p="VoxelMesh.cs" t="Include" />
+              <e p="VoxelPalette.cs" t="Include" />
+            </e>
+            <e p="Systems" t="Include">
+              <e p="ChunkApplyMeshSystem.cs" t="Include" />
+              <e p="ChunkReplayVoxelBufferSystem.cs" t="Include" />
+              <e p="ChunkTriangulationSystem.cs" t="Include" />
+            </e>
+            <e p="Utilities" t="Include">
+              <e p="IndexUtils.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Shaders" t="Include">
+            <e p="Block.shader" t="Include" />
+          </e>
+        </e>
+        <e p="Landfill" t="Include">
+          <e p="Scripts" t="Include">
+            <e p="Raycast.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="InifiniVoxel.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+    <e p="C:\Users\Brodal\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Brodal\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_InifiniVoxel.318221085.00" t="ExcludeRecursive" />
+  </component>
+</project>

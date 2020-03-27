@@ -406,12 +406,13 @@ namespace InfiniVoxel.Systems
         private EntityQuery m_entityQuery;
         private EndSimulationEntityCommandBufferSystem m_barrier;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
+            base.OnCreate();
             m_entityQuery = GetEntityQuery(ComponentType.ReadOnly<ChunkIndex>(), ComponentType.ReadOnly<Voxel>(), ComponentType.ReadWrite<TriangulateChunk>(),
-                                            ComponentType.ReadWrite<Vertex>(), ComponentType.ReadWrite<Index>(), ComponentType.ReadWrite<Buffers.Color>(), ComponentType.Exclude<ApplyMesh>());
-            m_barrier = World.Active.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+                ComponentType.ReadWrite<Vertex>(), ComponentType.ReadWrite<Index>(), ComponentType.ReadWrite<Buffers.Color>(), ComponentType.Exclude<ApplyMesh>());
+            
+            m_barrier = this.World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         }
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)

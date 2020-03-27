@@ -18,13 +18,12 @@ namespace InfiniVoxel.Systems
     {
         private EntityQuery m_query;
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
-
+            base.OnCreate();
             m_query = GetEntityQuery(ComponentType.ReadOnly<Vertex>(), ComponentType.ReadOnly<Index>(), ComponentType.ReadOnly<Buffers.Color>(), ComponentType.ReadWrite<ApplyMesh>(), ComponentType.Exclude<TriangulateChunk>());
         }
-
+        
         protected override void OnUpdate()
         {
             var entities = m_query.ToEntityArray(Unity.Collections.Allocator.TempJob);
@@ -75,17 +74,19 @@ namespace InfiniVoxel.Systems
                 indexBuffer.Clear();
                 UV0Buffer.Clear();
 
+                //NativeArray<float3> colliderVerticesArray = new NativeArray<float3>(colliderVertices, Allocator.Temp);
+                //NativeArray<int> indicesArray = new NativeArray<int>(indices, Allocator.Temp);
                 //  Create physics collider
-                var colliders = Unity.Physics.MeshCollider.Create(colliderVertices, indices, null, null);
+                //var colliders = Unity.Physics.MeshCollider.Create(colliderVerticesArray, indicesArray, null, null);
 
-                if (EntityManager.HasComponent<PhysicsCollider>(entity))
+                /*if (EntityManager.HasComponent<PhysicsCollider>(entity))
                 {
                     EntityManager.SetComponentData(entity, new PhysicsCollider { Value = colliders });
                 }
                 else
                 {
                     EntityManager.AddComponentData(entity, new PhysicsCollider { Value = colliders });
-                }
+                }*/
 
                 EntityManager.SetSharedComponentData(entity, renderMesh);
                 EntityManager.RemoveComponent<ApplyMesh>(entity);

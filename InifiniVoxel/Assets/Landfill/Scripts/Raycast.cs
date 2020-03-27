@@ -8,22 +8,19 @@ namespace Landfill
 {
     public static class Raycast
     {
-        public static Entity ResultAsEntity(float3 from, float3 to)
+        public static Entity ResultAsEntity(World world, float3 from, float3 to)
         {
-            var physicsWorldSystem = Unity.Entities.World.Active.GetExistingSystem<Unity.Physics.Systems.BuildPhysicsWorld>();
+            var physicsWorldSystem = world.GetExistingSystem<Unity.Physics.Systems.BuildPhysicsWorld>();
             var collisionWorld = physicsWorldSystem.PhysicsWorld.CollisionWorld;
 
             RaycastInput input = new RaycastInput()
             {
-                Ray = new Unity.Physics.Ray
-                {
-                    Origin = from,
-                    Direction = to - from
-                },
+                Start = from,
+                End = to,
                 Filter = new CollisionFilter
                 {
-                    CategoryBits = ~0u,
-                    MaskBits = ~0u,
+                    BelongsTo = ~0u,
+                    CollidesWith = ~0u,
                     GroupIndex = 0
                 }
             };
@@ -38,22 +35,19 @@ namespace Landfill
             return Entity.Null;
         }
 
-        public static RaycastHit ResultAsHit(float3 from, float3 to)
+        public static RaycastHit ResultAsHit(World world, float3 from, float3 to)
         {
-            var physicsWorldSystem = Unity.Entities.World.Active.GetExistingSystem<Unity.Physics.Systems.BuildPhysicsWorld>();
+            var physicsWorldSystem = world.GetExistingSystem<Unity.Physics.Systems.BuildPhysicsWorld>();
             var collisionWorld = physicsWorldSystem.PhysicsWorld.CollisionWorld;
 
             RaycastInput input = new RaycastInput()
             {
-                Ray = new Unity.Physics.Ray
-                {
-                    Origin = from,
-                    Direction = to - from
-                },
+                Start = from,
+                End = to,
                 Filter = new CollisionFilter
                 {
-                    CategoryBits = ~0u,
-                    MaskBits = ~0u,
+                    BelongsTo = ~0u,
+                    CollidesWith = ~0u,
                     GroupIndex = 0
                 }
             };
