@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
-
+/*
 namespace InfiniVoxel.Editor.Inspectors
 {
     [CustomEditor(typeof(InfiniVoxel.MonoBehaviours.VoxelPalette))]
@@ -67,3 +67,4 @@ namespace InfiniVoxel.Editor.Inspectors
     }
 }
 
+*/

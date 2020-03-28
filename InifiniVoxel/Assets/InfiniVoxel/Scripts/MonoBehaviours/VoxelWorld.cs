@@ -2,6 +2,8 @@
 using InfiniVoxel.Buffers;
 using InfiniVoxel.Components;
 using System.Collections.Generic;
+using InfiniVoxel.ScriptableObjects;
+using InfiniVoxel.Systems;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -15,6 +17,8 @@ namespace InfiniVoxel.MonoBehaviours
     
     public class VoxelWorld : MonoBehaviour
     {
+        [SerializeField]
+        private VoxelDatabase m_voxelDatabase;
         [SerializeField]
         private int m_chunkWidth = 16;
         [SerializeField]
@@ -45,21 +49,26 @@ namespace InfiniVoxel.MonoBehaviours
         private void Awake()
         {
             m_emptyChunk = new NativeArray<Voxel>(m_chunkWidth * m_chunkHeight * m_chunkDepth, Allocator.Persistent, NativeArrayOptions.ClearMemory);
-            
             m_world = World.All[0];
         }
 
         // Start is called before the first frame update
         void Start()
         {
+            m_voxelDatabase.Initialize();
+
+            m_world.GetOrCreateSystem<ChunkTriangulationSystem>().VoxelDatabase = m_voxelDatabase;
+            
             CHUNK_WIDTH = m_chunkWidth;
             CHUNK_HEIGHT = m_chunkHeight;
             CHUNK_DEPTH = m_chunkDepth;
 
+            InitializeEmptyVoxelBuffer();
+            
             var chunkIndex = new ChunkIndex { X = 0, Y = 0, Z = 0 };
             var chunkEntity = CreateChunk(chunkIndex);
+            
             InitializeChunkData(chunkEntity);
-            InitializeEmptyVoxelBuffer();
         }
 
         private void OnDestroy()
@@ -102,7 +111,7 @@ namespace InfiniVoxel.MonoBehaviours
                     for (int z = 0; z < m_chunkDepth; z++)
                     {
                         int flatIndex = IndexUtils.ToFlatIndex(x, y, z, m_chunkWidth, m_chunkDepth);
-                        m_emptyChunk[flatIndex] = new Voxel { Transparent = 1, Type = 0 };
+                        m_emptyChunk[flatIndex] = new Voxel { DatabaseIndex = 0 };
                     }
                 }
             }
@@ -119,21 +128,25 @@ namespace InfiniVoxel.MonoBehaviours
                 {
                     for (int z = 0; z < m_chunkDepth; z++)
                     {
+                        voxels[IndexUtils.ToFlatIndex(x, y, z, m_chunkWidth, m_chunkDepth)] =
+                            new Voxel {DatabaseIndex = 2};
+
                         //voxels.Add(new Voxel { Transparent = 0, Type = UnityEngine.Random.Range(0, 2)});
-                        if (x > m_chunkWidth / 2 && x < m_chunkWidth * 0.75 &&
+                        /*if (x > m_chunkWidth / 2 && x < m_chunkWidth * 0.75 &&
                         y > m_chunkHeight / 2 && y < m_chunkHeight * 0.75 &&
                         z > m_chunkHeight / 2 && z < m_chunkHeight * 0.75)
                         {
-                            voxels.Add(new Voxel { Type = 1, Transparent = 0 });
+                            voxels.Add(new Voxel { DatabaseIndex = 1});
                         }
                         else if (x == 0)
                         {
-                            voxels.Add(new Voxel { Type = 2, Transparent = 0 });
+                            voxels.Add(new Voxel { DatabaseIndex = 2 });
                         }
                         else
                         {
-                            voxels.Add(Voxel.Null);
-                        }
+                            voxels.Add(new Voxel { DatabaseIndex = 1});
+                            //voxels.Add(Voxel.Null);
+                        }*/
                     }
                 }
             }

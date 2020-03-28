@@ -64,6 +64,8 @@
      <Compile Include="Assets\InfiniVoxel\Scripts\CustomWorldInitializer.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\MonoBehaviours\VoxelObject.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\MonoBehaviours\VoxelWorld.cs" />
+     <Compile Include="Assets\InfiniVoxel\Scripts\ScriptableObjects\VoxelData.cs" />
+     <Compile Include="Assets\InfiniVoxel\Scripts\ScriptableObjects\VoxelDatabase.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\ScriptableObjects\VoxelMesh.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\ScriptableObjects\VoxelPalette.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\Systems\ChunkApplyMeshSystem.cs" />
@@ -734,6 +736,9 @@
  </Reference>
  <Reference Include="Unity.Mathematics.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.UI.Builder.Editor">
+ <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.UI.Builder.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>

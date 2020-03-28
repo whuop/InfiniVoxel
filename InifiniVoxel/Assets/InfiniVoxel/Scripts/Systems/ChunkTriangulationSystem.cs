@@ -2,6 +2,7 @@
 using InfiniVoxel.Components;
 using System.Collections;
 using System.Collections.Generic;
+using InfiniVoxel.ScriptableObjects;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
@@ -28,6 +29,8 @@ namespace InfiniVoxel.Systems
             public ArchetypeChunkBufferType<Voxel> VoxelType;
             [ReadOnly]
             public ArchetypeChunkComponentType<Components.ChunkScale> ChunkScaleType;
+
+            public NativeArray<VoxelConcurrent> ConcurrentVoxels;
 
             public ArchetypeChunkBufferType<Vertex> VertexType;
             public ArchetypeChunkBufferType<Index> IndexType;
@@ -85,11 +88,36 @@ namespace InfiniVoxel.Systems
 
                 }
 
-                float tileSize = (1.0f / 16.0f);
+                //float tileSize = (1.0f / 16.0f);
+                VoxelConcurrent currentVoxel = ConcurrentVoxels[voxel.DatabaseIndex];
                 
                 for(int i = 0; i < voxelUVs.Length; i++)
                 {
-                    if (voxel.Type == 1)
+                    float2 uv = float2.zero;
+                    switch (voxel.Side)
+                    {
+                        case TOP:
+                            uv = currentVoxel.TopUV;
+                            break;
+                        case BOTTOM:
+                            uv = currentVoxel.BottomUV;
+                            break;
+                        case WEST:
+                            uv = currentVoxel.WestUV;
+                            break;
+                        case EAST:
+                            uv = currentVoxel.EastUV;
+                            break;
+                        case NORTH:
+                            uv = currentVoxel.NorthUV;
+                            break;
+                        case SOUTH:
+                            uv = currentVoxel.SouthUV;
+                            break;
+                    }
+                    Debug.Log($"Set UV {uv}");
+                    voxelUVs[i] = new UV0 { Value = uv };
+                    /*if (voxel.Type == 1)
                     {
                         float2 uv = new float2(0, tileSize * 15);
                         switch(voxel.Side)
@@ -122,7 +150,7 @@ namespace InfiniVoxel.Systems
                     else
                     {
                         voxelUVs[i] = new UV0 { Value = new float2(0, 0) };
-                    }
+                    }*/
                 }
 
                 vertices.AddRange(voxelVertices);
@@ -166,11 +194,6 @@ namespace InfiniVoxel.Systems
                     var indices = indexAccessor[index];
                     var uv0 = uv0Accessor[index];
 
-                    //  Clear buffers before we start calculating the new values.
-                    //vertices.Clear();
-                    //indices.Clear();
-                    //uv0.Clear();
-
                     /*
                      * These are just working variables for the algorithm - almost all taken 
                      * directly from Mikola Lysenko's javascript implementation.
@@ -182,14 +205,12 @@ namespace InfiniVoxel.Systems
                     int[] du = new int[] { 0, 0, 0 };
                     int[] dv = new int[] { 0, 0, 0 };
 
-                    
-
                     /*
                      * These are just working variables to hold two faces during comparison.
                      */
                     Voxel voxelFace, voxelFace1;
 
-                    /**
+                    /*
                      * We start with the lesser-spotted boolean for-loop (also known as the old flippy floppy). 
                      * 
                      * The variable backFace will be TRUE on the first iteration and FALSE on the second - this allows 
@@ -271,22 +292,22 @@ namespace InfiniVoxel.Systems
                                         }
                                         else if (backFace)
                                         {
-                                            if (voxelFace == Voxel.Null || voxelFace.Transparent == 1)
+                                            //    Todo: Fix transparent part
+                                            var voxelFaceData = ConcurrentVoxels[voxelFace.DatabaseIndex];
+                                            if (voxelFace == Voxel.Null || voxelFaceData.IsTransparent == 1)
                                                 mask[n++] = voxelFace1;
                                             else
                                                 mask[n++] = Voxel.Null;
                                         }
                                         else
                                         {
-                                            if (voxelFace1 == Voxel.Null || voxelFace1.Transparent == 1)
+                                            //    Todo: Fix transparent part
+                                            var voxelFaceData = ConcurrentVoxels[voxelFace1.DatabaseIndex];
+                                            if (voxelFace1 == Voxel.Null || voxelFaceData.IsTransparent == 1)
                                                 mask[n++] = voxelFace;
                                             else
                                                 mask[n++] = Voxel.Null;
                                         }
-
-                                        /*mask[n++] = ((voxelFace != Voxel.Null && voxelFace1 != Voxel.Null && voxelFace.Equals(voxelFace1)))
-                                                    ? Voxel.Null
-                                                    : backFace ? voxelFace1 : voxelFace;*/
                                     }
                                 }
 
@@ -305,7 +326,7 @@ namespace InfiniVoxel.Systems
 
                                         if (mask[n] != null)
                                         {
-
+                                            
                                             /*
                                              * We compute the width
                                              */
@@ -332,7 +353,8 @@ namespace InfiniVoxel.Systems
                                              * Here we check the "transparent" attribute in the VoxelFace class to ensure that we don't mesh 
                                              * any culled faces.
                                              */
-                                            if (mask[n].Transparent == 0)
+                                            var maskVoxel = ConcurrentVoxels[mask[n].DatabaseIndex];
+                                            if (maskVoxel.IsTransparent == 0)
                                             {
                                                 /*
                                                  * Add quad
@@ -406,6 +428,13 @@ namespace InfiniVoxel.Systems
         private EntityQuery m_entityQuery;
         private EndSimulationEntityCommandBufferSystem m_barrier;
 
+        private VoxelDatabase m_voxelDatabase;
+        public VoxelDatabase VoxelDatabase
+        {
+            get { return m_voxelDatabase; }
+            set { m_voxelDatabase = value; }
+        }
+        
         protected override void OnCreate()
         {
             base.OnCreate();
@@ -426,6 +455,7 @@ namespace InfiniVoxel.Systems
 
             var execJob = new Job();
             execJob.CommandBuffer = m_barrier.CreateCommandBuffer().ToConcurrent();
+            execJob.ConcurrentVoxels = m_voxelDatabase.GetConcurrentVoxels();
             execJob.EntityType = entityType;
             execJob.VoxelType = voxelType;
             execJob.ChunkScaleType = scaleType;

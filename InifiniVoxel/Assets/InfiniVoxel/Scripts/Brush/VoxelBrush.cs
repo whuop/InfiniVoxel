@@ -1,6 +1,7 @@
 ﻿using InfiniVoxel.MonoBehaviours;
 using System.Collections;
 using System.Collections.Generic;
+using InfiniVoxel.ScriptableObjects;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -12,6 +13,9 @@ namespace InfiniVoxel.Brush
         private float m_brushLength = 999.0f;
 
         private VoxelWorld m_voxelWorld;
+        
+        [SerializeField]
+        private VoxelData m_brushTile;
 
         // Start is called before the first frame update
         void Start()
@@ -36,7 +40,7 @@ namespace InfiniVoxel.Brush
                 else
                 {
                     Debug.Log("Hit Something!");
-                    m_voxelWorld.PlaceVoxel(hit.Position + hit.SurfaceNormal * 0.5f, new Buffers.Voxel { Transparent = 0, Type = 3 });
+                    m_voxelWorld.PlaceVoxel(hit.Position + hit.SurfaceNormal * 0.5f, new Buffers.Voxel { DatabaseIndex = 1 });
                 }
             }
             else if (Input.GetMouseButtonDown(1))
@@ -49,7 +53,7 @@ namespace InfiniVoxel.Brush
                 else
                 {
                     Debug.Log("Hit Something!");
-                    m_voxelWorld.PlaceVoxel(hit.Position - hit.SurfaceNormal * 0.1f, new Buffers.Voxel { Transparent = 1, Type = 0 });
+                    m_voxelWorld.PlaceVoxel(hit.Position - hit.SurfaceNormal * 0.1f, new Buffers.Voxel { DatabaseIndex = 0});
                 }
             }
         }

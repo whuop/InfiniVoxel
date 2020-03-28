@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64f8b8af30f3f64795462563919e499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_brushTile: {fileID: 11400000, guid: 599e4359912a67944a70edfd5ffc684d, type: 2}
 --- !u!4 &386133098
 Transform:
   m_ObjectHideFlags: 0
@@ -335,6 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a1d42a640545c4585355de7ff656db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_voxelDatabase: {fileID: 11400000, guid: 421d3c5135fbfb84da21c40993b9fe0c, type: 2}
   m_chunkWidth: 16
   m_chunkHeight: 16
   m_chunkDepth: 16

@@ -5,7 +5,7 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
-
+/*
 namespace InfiniVoxel.Editor.Importers
 {
     
@@ -244,5 +244,5 @@ namespace InfiniVoxel.Editor.Importers
         }
     }
 }
-
+*/
 

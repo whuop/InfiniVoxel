@@ -80,21 +80,16 @@ namespace InfiniVoxel.Systems
                 vertexBuffer.Clear();
                 indexBuffer.Clear();
                 UV0Buffer.Clear();
-
-
-                //    Create the triangles array
-                //for (int j = 0; j < colliderIndices.Length; j++)
-                //{
-                    for (int k = 0; k < indices.Length; k += 3)
+                
+                for (int k = 0; k < indices.Length; k += 3)
+                {
+                    colliderIndices[k / 3] = new int3()
                     {
-                        colliderIndices[k / 3] = new int3()
-                        {
-                            x = indices[k],
-                            y = indices[k+1],
-                            z = indices[k+2]
-                        };
-                    }
-                //}
+                        x = indices[k],
+                        y = indices[k+1],
+                        z = indices[k+2]
+                    };
+                }
 
                 var physicsFilter = Unity.Physics.CollisionFilter.Default;
 

@@ -8,21 +8,19 @@ namespace InfiniVoxel.Buffers
     [System.Serializable]
     public struct Voxel : IBufferElementData
     {
-        public int Type;
-        public int Transparent;
+        public int DatabaseIndex;
         public int Side;
 
         public static Voxel Null = new Voxel
         {
-            Transparent = 1,
-            Type = -999,
+            DatabaseIndex = 0,
             Side = -999
         };
 
         public override bool Equals(object obj)
         {
             Voxel other = (Voxel)obj;
-            return other.Type == this.Type && other.Transparent == this.Transparent;
+            return other.DatabaseIndex == this.DatabaseIndex;
         }
 
         public static bool operator ==(Voxel a, Voxel b)
@@ -38,8 +36,7 @@ namespace InfiniVoxel.Buffers
         public override int GetHashCode()
         {
             var hashCode = -1019560780;
-            hashCode = hashCode * -1521134295 + Type.GetHashCode();
-            hashCode = hashCode * -1521134295 + Transparent.GetHashCode();
+            hashCode = hashCode * -1521134295 + DatabaseIndex.GetHashCode();
             return hashCode;
         }
     }
