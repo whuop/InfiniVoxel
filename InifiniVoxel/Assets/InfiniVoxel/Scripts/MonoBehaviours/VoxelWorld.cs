@@ -1,4 +1,5 @@
-﻿using InfiniVoxel.Buffers;
+﻿using System;
+using InfiniVoxel.Buffers;
 using InfiniVoxel.Components;
 using System.Collections.Generic;
 using Unity.Collections;
@@ -11,6 +12,7 @@ using UnityEngine;
 
 namespace InfiniVoxel.MonoBehaviours
 {
+    
     public class VoxelWorld : MonoBehaviour
     {
         [SerializeField]
@@ -33,7 +35,6 @@ namespace InfiniVoxel.MonoBehaviours
         public static int CHUNK_DEPTH;
         [SerializeField]
         private UnityEngine.Material m_chunkMaterial;
-
 
         private Dictionary<ChunkIndex, Entity> m_createdChunks = new Dictionary<ChunkIndex, Entity>();
 
@@ -59,6 +60,12 @@ namespace InfiniVoxel.MonoBehaviours
             var chunkEntity = CreateChunk(chunkIndex);
             InitializeChunkData(chunkEntity);
             InitializeEmptyVoxelBuffer();
+        }
+
+        private void OnDestroy()
+        {
+            //    Destroy all persistent native arrays to avoid memory leaks.
+            m_emptyChunk.Dispose();
         }
 
         public void CreateFromVoxelArray(Voxel[] voxels, Texture2D materialTexture, int chunkWidth, int chunkHeight, int chunkDepth)
@@ -174,6 +181,8 @@ namespace InfiniVoxel.MonoBehaviours
 
             //  Create the renderer
             entityManager.AddSharedComponentData(entity, new RenderMesh { castShadows = m_shadowCastingMode, layer = 0, receiveShadows = m_receiveShadows, subMesh = m_subMesh, material = m_chunkMaterial, mesh = new UnityEngine.Mesh() });
+            var aabb = new AABB() { Center = pos, Extents = new float3(100, 100, 100)};
+            entityManager.AddComponentData(entity, new RenderBounds() { Value = aabb});
             return entity;
         }
 

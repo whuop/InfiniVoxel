@@ -10,6 +10,7 @@ using Unity.Physics.Authoring;
 using Unity.Rendering;
 using Unity.Transforms;
 using UnityEngine;
+using Material = Unity.Physics.Material;
 
 namespace InfiniVoxel.Systems
 {
@@ -21,7 +22,12 @@ namespace InfiniVoxel.Systems
         protected override void OnCreate()
         {
             base.OnCreate();
-            m_query = GetEntityQuery(ComponentType.ReadOnly<Vertex>(), ComponentType.ReadOnly<Index>(), ComponentType.ReadOnly<Buffers.Color>(), ComponentType.ReadWrite<ApplyMesh>(), ComponentType.Exclude<TriangulateChunk>());
+            m_query = GetEntityQuery(
+                ComponentType.ReadOnly<Vertex>(), 
+                ComponentType.ReadOnly<Index>(), 
+                ComponentType.ReadOnly<Buffers.Color>(), 
+                ComponentType.ReadWrite<ApplyMesh>(), 
+                ComponentType.Exclude<TriangulateChunk>());
         }
         
         protected override void OnUpdate()
@@ -38,8 +44,9 @@ namespace InfiniVoxel.Systems
                 Vector3[] vertices = new Vector3[vertexBuffer.Length];
                 int[] indices = new int[indexBuffer.Length];
                 Vector2[] uv0 = new Vector2[UV0Buffer.Length];
-
-                float3[] colliderVertices = new float3[vertexBuffer.Length];
+                
+                NativeArray<float3> colliderVertices = new NativeArray<float3>(vertexBuffer.Length, Allocator.Temp, NativeArrayOptions.UninitializedMemory);
+                NativeArray<int3> colliderIndices = new NativeArray<int3>(indexBuffer.Length / 3, Allocator.Temp, NativeArrayOptions.UninitializedMemory);
 
                 int longest = Mathf.Max(vertices.Length, indices.Length);
                 longest = Mathf.Max(longest, UV0Buffer.Length);
@@ -74,22 +81,45 @@ namespace InfiniVoxel.Systems
                 indexBuffer.Clear();
                 UV0Buffer.Clear();
 
-                //NativeArray<float3> colliderVerticesArray = new NativeArray<float3>(colliderVertices, Allocator.Temp);
-                //NativeArray<int> indicesArray = new NativeArray<int>(indices, Allocator.Temp);
-                //  Create physics collider
-                //var colliders = Unity.Physics.MeshCollider.Create(colliderVerticesArray, indicesArray, null, null);
 
-                /*if (EntityManager.HasComponent<PhysicsCollider>(entity))
+                //    Create the triangles array
+                //for (int j = 0; j < colliderIndices.Length; j++)
+                //{
+                    for (int k = 0; k < indices.Length; k += 3)
+                    {
+                        colliderIndices[k / 3] = new int3()
+                        {
+                            x = indices[k],
+                            y = indices[k+1],
+                            z = indices[k+2]
+                        };
+                    }
+                //}
+
+                var physicsFilter = Unity.Physics.CollisionFilter.Default;
+
+                var physicsMaterial = Unity.Physics.Material.Default;
+                //  Create physics collider
+                var colliders = Unity.Physics.MeshCollider.Create(colliderVertices, colliderIndices, physicsFilter, physicsMaterial);
+
+                
+                
+                if (EntityManager.HasComponent<PhysicsCollider>(entity))
                 {
                     EntityManager.SetComponentData(entity, new PhysicsCollider { Value = colliders });
                 }
                 else
                 {
                     EntityManager.AddComponentData(entity, new PhysicsCollider { Value = colliders });
-                }*/
+                }
 
                 EntityManager.SetSharedComponentData(entity, renderMesh);
                 EntityManager.RemoveComponent<ApplyMesh>(entity);
+                
+                colliderVertices.Dispose();
+                colliderIndices.Dispose();
+                
+                Debug.Log($"Applied Mesh and Collider for Entity {entity.Index}");
             }
             entities.Dispose();
         }

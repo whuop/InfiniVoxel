@@ -26,23 +26,31 @@ namespace InfiniVoxel.Brush
             Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             float3 toPos = cameraPos + (float3)mouseRay.direction * m_brushLength;
 
-            var hit = Landfill.Raycast.ResultAsHit(World.All[0],cameraPos, toPos);
-
-            if (hit.SurfaceNormal.Equals(float3.zero))
+            if (Input.GetMouseButtonDown(0))
             {
-            }
-            else
-            {
-                if (Input.GetMouseButtonDown(0))
+                var hit = Landfill.Raycast.ResultAsHit(World.All[0],cameraPos, toPos);
+                if (hit.SurfaceNormal.Equals(float3.zero))
                 {
-                    m_voxelWorld.PlaceVoxel(hit.Position + hit.SurfaceNormal * 0.1f, new Buffers.Voxel { Transparent = 0, Type = 3 });
+                    Debug.LogError("Hit Surface Normal is Zero!");
                 }
-                if (Input.GetMouseButtonDown(1))
+                else
                 {
+                    Debug.Log("Hit Something!");
+                    m_voxelWorld.PlaceVoxel(hit.Position + hit.SurfaceNormal * 0.5f, new Buffers.Voxel { Transparent = 0, Type = 3 });
+                }
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                var hit = Landfill.Raycast.ResultAsHit(World.All[0],cameraPos, toPos);
+                if (hit.SurfaceNormal.Equals(float3.zero))
+                {
+                    Debug.LogError("Hit Surface Normal is Zero!");
+                }
+                else
+                {
+                    Debug.Log("Hit Something!");
                     m_voxelWorld.PlaceVoxel(hit.Position - hit.SurfaceNormal * 0.1f, new Buffers.Voxel { Transparent = 1, Type = 0 });
                 }
-                    
-                //Debug.Log("Collision Normal: " + hit.SurfaceNormal);
             }
         }
 

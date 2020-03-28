@@ -627,6 +627,12 @@
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="UnityEditor.CacheServer">
+ <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/UnityEditor.CacheServer.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.ScriptableBuildPipeline.Editor">
+ <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Burst">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
  </Reference>
@@ -669,6 +675,9 @@
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.Searcher.Editor">
+ <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Searcher.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Mathematics.Extensions.Hybrid">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Mathematics.Extensions.Hybrid.dll</HintPath>
  </Reference>
@@ -684,17 +693,26 @@
  <Reference Include="Unity.CollabProxy.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.Rendering.Hybrid.Editor">
+ <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Rendering.Hybrid.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Entities.BuildUtils">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Entities.BuildUtils.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Rider.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.Entities.Hybrid.EndToEnd.Tests">
+ <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Entities.Hybrid.EndToEnd.Tests.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Entities.Hybrid">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Entities.Hybrid.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Mathematics">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Properties">
+ <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Properties.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Physics.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Physics.Editor.dll</HintPath>
@@ -711,6 +729,9 @@
  <Reference Include="Unity.VisualStudio.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.VisualStudio.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.ScriptableBuildPipeline">
+ <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Mathematics.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
  </Reference>
@@ -725,27 +746,6 @@
  </Reference>
  <Reference Include="Unity.Transforms.Hybrid">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Transforms.Hybrid.dll</HintPath>
- </Reference>
- <Reference Include="UnityEditor.CacheServer">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/UnityEditor.CacheServer.dll</HintPath>
- </Reference>
- <Reference Include="Unity.ScriptableBuildPipeline.Editor">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Searcher.Editor">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Searcher.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Entities.Hybrid.EndToEnd.Tests">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Entities.Hybrid.EndToEnd.Tests.dll</HintPath>
- </Reference>
- <Reference Include="Unity.ScriptableBuildPipeline">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Properties">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Properties.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Rendering.Hybrid.Editor">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Rendering.Hybrid.Editor.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
+using UnityEngine;
+using RaycastHit = Unity.Physics.RaycastHit;
 
 namespace Landfill
 {
@@ -17,12 +19,7 @@ namespace Landfill
             {
                 Start = from,
                 End = to,
-                Filter = new CollisionFilter
-                {
-                    BelongsTo = ~0u,
-                    CollidesWith = ~0u,
-                    GroupIndex = 0
-                }
+                Filter = CollisionFilter.Default
             };
 
             RaycastHit hit = new Unity.Physics.RaycastHit();
@@ -44,18 +41,20 @@ namespace Landfill
             {
                 Start = from,
                 End = to,
-                Filter = new CollisionFilter
-                {
-                    BelongsTo = ~0u,
-                    CollidesWith = ~0u,
-                    GroupIndex = 0
-                }
+                Filter = CollisionFilter.Default
             };
 
             RaycastHit hit = new Unity.Physics.RaycastHit();
             bool haveHit = collisionWorld.CastRay(input, out hit);
             if (!haveHit)
+            {
+                Debug.LogError("MISSED!");
                 return default(RaycastHit);
+            }
+            else
+            {
+                Debug.LogError("HIT!!");
+            }             
             return hit;
         }
     }
