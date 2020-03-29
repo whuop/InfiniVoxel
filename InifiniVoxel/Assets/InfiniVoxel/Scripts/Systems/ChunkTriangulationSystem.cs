@@ -384,7 +384,7 @@ namespace InfiniVoxel.Systems
                     }
 
                     CommandBuffer.RemoveComponent<TriangulateChunk>(chunkIndex, entity);
-                    CommandBuffer.AddComponent(chunkIndex, entity, new ApplyMesh());
+                    CommandBuffer.AddComponent(chunkIndex, entity, new ApplyMeshGameObject());
                 }
             }
         }

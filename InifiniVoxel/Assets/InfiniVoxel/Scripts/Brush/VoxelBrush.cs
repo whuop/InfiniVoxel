@@ -30,7 +30,7 @@ namespace InfiniVoxel.Brush
             Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             float3 toPos = cameraPos + (float3)mouseRay.direction * m_brushLength;
 
-            if (Input.GetMouseButtonDown(0))
+            /*if (Input.GetMouseButtonDown(0))
             {
                 var hit = Landfill.Raycast.ResultAsHit(World.All[0],cameraPos, toPos);
                 if (hit.SurfaceNormal.Equals(float3.zero))
@@ -55,7 +55,7 @@ namespace InfiniVoxel.Brush
                     Debug.Log("Hit Something!");
                     m_voxelWorld.PlaceVoxel(hit.Position - hit.SurfaceNormal * 0.1f, new Buffers.Voxel { DatabaseIndex = 0});
                 }
-            }
+            }*/
         }
 
         private void OnDrawGizmos()

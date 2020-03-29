@@ -74,6 +74,7 @@ namespace InfiniVoxel.MonoBehaviours
             m_voxelDatabase.Initialize();
 
             m_world.GetOrCreateSystem<ChunkTriangulationSystem>().VoxelDatabase = m_voxelDatabase;
+            m_world.GetOrCreateSystem<ChunkApplyMeshGameObjectSystem>().ChunkMaterial = m_chunkMaterial;
             
             CHUNK_WIDTH = m_chunkWidth;
             CHUNK_HEIGHT = m_chunkHeight;
@@ -105,36 +106,43 @@ namespace InfiniVoxel.MonoBehaviours
         private void GenerateWorld()
         {
             Perlin perlin = new Perlin();
-
+            Perlin dirtPerlin = new Perlin();
+            
             perlin.Frequency = 0.01;
-            for (int x = 0; x < 128; x++)
+
+            dirtPerlin.Frequency = 0.001;
+            dirtPerlin.Seed = 5;
+            
+            
+            for (int x = 0; x < 64; x++)
             {
-                for (int z = 0; z < 128; z++)
+                for (int z = 0; z < 64; z++)
                 {
                     int stone = (int)(perlin.GetValue((double)x + 0.1, 0.1, (double)z + 0.1) * 32) + 32;
-                    
-                    //Debug.Log("Stone Height: " + stone);
-                    
-                    
+                    int dirt = (int) (dirtPerlin.GetValue((double) x + 0.1, 0.1, (double) z + 0.1) * 32) + 32;
+
+                    bool lastDirt = true;
                     for (int y = 0; y < 64; y++)
                     {
-
                         if (y <= stone)
                         {
+                            lastDirt = false;
+                            PlaceVoxel(x,y,z, new Voxel(){ DatabaseIndex = 3 });
+                        }
+                        else if (y <= dirt)
+                        {
+                            lastDirt = true;
                             PlaceVoxel(x,y,z, new Voxel(){ DatabaseIndex = 1 });
                         }
                         else
                         {
-                            PlaceVoxel(x,y,z, new Voxel(){ DatabaseIndex = 0 });
-                        }
-                        
-                            /*double value = perlin.GetValue((double)x + 0.1, (double)y + 0.1, (double)z + 0.1);
-                            Debug.Log("Value: " + value);
-
-                            if (value < 0.0)
+                            if (lastDirt)
                             {
-                                PlaceVoxel(x, y, z, Voxel.Null);
-                            }*/
+                                PlaceVoxel(x,y - 1,z, new Voxel(){ DatabaseIndex = 2 });
+                            }
+                            PlaceVoxel(x,y,z, new Voxel(){ DatabaseIndex = 0 });
+                            lastDirt = false;
+                        }
                         
                     }
                 }
@@ -194,23 +202,6 @@ namespace InfiniVoxel.MonoBehaviours
                     {
                         voxels[IndexUtils.ToFlatIndex(x, y, z, m_chunkWidth, m_chunkDepth)] =
                             new Voxel {DatabaseIndex = 2};
-
-                        //voxels.Add(new Voxel { Transparent = 0, Type = UnityEngine.Random.Range(0, 2)});
-                        /*if (x > m_chunkWidth / 2 && x < m_chunkWidth * 0.75 &&
-                        y > m_chunkHeight / 2 && y < m_chunkHeight * 0.75 &&
-                        z > m_chunkHeight / 2 && z < m_chunkHeight * 0.75)
-                        {
-                            voxels.Add(new Voxel { DatabaseIndex = 1});
-                        }
-                        else if (x == 0)
-                        {
-                            voxels.Add(new Voxel { DatabaseIndex = 2 });
-                        }
-                        else
-                        {
-                            voxels.Add(new Voxel { DatabaseIndex = 1});
-                            //voxels.Add(Voxel.Null);
-                        }*/
                     }
                 }
             }
@@ -251,14 +242,14 @@ namespace InfiniVoxel.MonoBehaviours
             };
 
             entityManager.AddComponentData(entity, new Translation { Value = pos });
-            entityManager.AddComponentData(entity, new LocalToWorld { Value = float4x4.identity });
-            entityManager.AddComponentData(entity, new Rotation { Value = quaternion.identity });
+            //entityManager.AddComponentData(entity, new LocalToWorld { Value = float4x4.identity });
+            //entityManager.AddComponentData(entity, new Rotation { Value = quaternion.identity });
 
 
             //  Create the renderer
-            entityManager.AddSharedComponentData(entity, new RenderMesh { castShadows = m_shadowCastingMode, layer = 0, receiveShadows = m_receiveShadows, subMesh = m_subMesh, material = m_chunkMaterial, mesh = new UnityEngine.Mesh() });
-            var aabb = new AABB() { Center = pos, Extents = new float3(100, 100, 100)};
-            entityManager.AddComponentData(entity, new RenderBounds() { Value = aabb});
+            //entityManager.AddSharedComponentData(entity, new RenderMesh { castShadows = m_shadowCastingMode, layer = 0, receiveShadows = m_receiveShadows, subMesh = m_subMesh, material = m_chunkMaterial, mesh = new UnityEngine.Mesh() });
+            //var aabb = new AABB() { Center = pos, Extents = new float3(100, 100, 100)};
+            //entityManager.AddComponentData(entity, new RenderBounds() { Value = aabb});
             return entity;
         }
 

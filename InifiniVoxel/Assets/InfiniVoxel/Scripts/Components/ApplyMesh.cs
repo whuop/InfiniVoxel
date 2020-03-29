@@ -8,5 +8,9 @@ namespace InfiniVoxel.Components
     public struct ApplyMesh : IComponentData
     {
     }
+
+    public struct ApplyMeshGameObject : IComponentData
+    {
+    }
 }
 

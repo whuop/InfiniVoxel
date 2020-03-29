@@ -60,7 +60,9 @@
               <e p="WorldGenerator.cs" t="Include" />
             </e>
             <e p="Systems" t="Include">
+              <e p="ChunkApplyMeshGameObjectSystem.cs" t="Include" />
               <e p="ChunkApplyMeshSystem.cs" t="Include" />
+              <e p="ChunkGameObjectPoolSystem.cs" t="Include" />
               <e p="ChunkReplayVoxelBufferSystem.cs" t="Include" />
               <e p="ChunkTriangulationSystem.cs" t="Include" />
             </e>

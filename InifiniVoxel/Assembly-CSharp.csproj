@@ -69,7 +69,9 @@
      <Compile Include="Assets\InfiniVoxel\Scripts\ScriptableObjects\VoxelMesh.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\ScriptableObjects\VoxelPalette.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\ScriptableObjects\WorldGenerator.cs" />
+     <Compile Include="Assets\InfiniVoxel\Scripts\Systems\ChunkApplyMeshGameObjectSystem.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\Systems\ChunkApplyMeshSystem.cs" />
+     <Compile Include="Assets\InfiniVoxel\Scripts\Systems\ChunkGameObjectPoolSystem.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\Systems\ChunkReplayVoxelBufferSystem.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\Systems\ChunkTriangulationSystem.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\Utilities\IndexUtils.cs" />
@@ -258,6 +260,12 @@
  <Reference Include="UnityEditor">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.5f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
  </Reference>
+ <Reference Include="SharpNoise">
+ <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Assets/Plugins/SharpNoise.dll</HintPath>
+ </Reference>
+ <Reference Include="SharpNoise.Utilities">
+ <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Assets/Plugins/SharpNoise.Utilities.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Analytics.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Editor.dll</HintPath>
  </Reference>
@@ -272,12 +280,6 @@
  </Reference>
  <Reference Include="System.Runtime.CompilerServices.Unsafe">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/PackageCache/com.unity.collections@0.7.0-preview.2/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
- </Reference>
- <Reference Include="SharpNoise">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Assets/Plugins/SharpNoise.dll</HintPath>
- </Reference>
- <Reference Include="SharpNoise.Utilities">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Assets/Plugins/SharpNoise.Utilities.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.5f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -672,9 +674,6 @@
  <Reference Include="Unity.Scenes.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Scenes.Editor.dll</HintPath>
  </Reference>
- <Reference Include="Unity.Physics">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Physics.dll</HintPath>
- </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
@@ -695,9 +694,6 @@
  </Reference>
  <Reference Include="Unity.Rendering.Hybrid">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Rendering.Hybrid.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Physics.Hybrid">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Physics.Hybrid.dll</HintPath>
  </Reference>
  <Reference Include="Unity.CollabProxy.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
@@ -722,9 +718,6 @@
  </Reference>
  <Reference Include="Unity.Properties">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Properties.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Physics.Editor">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Physics.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.2D.Sprite.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>

@@ -251,6 +251,12 @@
  <Reference Include="UnityEditor.WindowsStandalone.Extensions">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.5f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
  </Reference>
+ <Reference Include="SharpNoise">
+ <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Assets/Plugins/SharpNoise.dll</HintPath>
+ </Reference>
+ <Reference Include="SharpNoise.Utilities">
+ <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Assets/Plugins/SharpNoise.Utilities.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>
@@ -271,12 +277,6 @@
  </Reference>
  <Reference Include="UnityEditor.Purchasing">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/PackageCache/com.unity.purchasing@2.0.6/Editor/UnityEditor.Purchasing.dll</HintPath>
- </Reference>
- <Reference Include="SharpNoise">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Assets/Plugins/SharpNoise.dll</HintPath>
- </Reference>
- <Reference Include="SharpNoise.Utilities">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Assets/Plugins/SharpNoise.Utilities.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
@@ -680,9 +680,6 @@
  <Reference Include="Unity.Scenes.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Scenes.Editor.dll</HintPath>
  </Reference>
- <Reference Include="Unity.Physics">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Physics.dll</HintPath>
- </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
@@ -703,9 +700,6 @@
  </Reference>
  <Reference Include="Unity.Rendering.Hybrid">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Rendering.Hybrid.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Physics.Hybrid">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Physics.Hybrid.dll</HintPath>
  </Reference>
  <Reference Include="Unity.CollabProxy.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
@@ -730,9 +724,6 @@
  </Reference>
  <Reference Include="Unity.Properties">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Properties.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Physics.Editor">
- <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.Physics.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.2D.Sprite.Editor">
  <HintPath>C:/Repos/InfiniVoxel/InifiniVoxel/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
