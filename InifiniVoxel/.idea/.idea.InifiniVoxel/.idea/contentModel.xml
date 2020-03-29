@@ -40,7 +40,12 @@
                 <e p="EnumFlagsAttributeDrawer.cs" t="Include" />
               </e>
               <e p="Inspectors" t="Include">
+                <e p="VoxelDatabaseInspector.cs" t="Include" />
+                <e p="VoxelDataInspector.cs" t="Include" />
                 <e p="VoxelPaletteEditor.cs" t="Include" />
+              </e>
+              <e p="TexturePacker" t="Include">
+                <e p="SpriteTexturePacker.cs" t="Include" />
               </e>
             </e>
             <e p="MonoBehaviours" t="Include">
@@ -48,8 +53,11 @@
               <e p="VoxelWorld.cs" t="Include" />
             </e>
             <e p="ScriptableObjects" t="Include">
+              <e p="VoxelData.cs" t="Include" />
+              <e p="VoxelDatabase.cs" t="Include" />
               <e p="VoxelMesh.cs" t="Include" />
               <e p="VoxelPalette.cs" t="Include" />
+              <e p="WorldGenerator.cs" t="Include" />
             </e>
             <e p="Systems" t="Include">
               <e p="ChunkApplyMeshSystem.cs" t="Include" />

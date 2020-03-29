@@ -15,21 +15,51 @@ MonoBehaviour:
   m_isTransparent: 1
   m_type: 0
   m_material: {fileID: 2100000, guid: e98d61d781e8f0a41844546250cf0439, type: 2}
-  NorthUV:
+  m_topUV:
+    serializedVersion: 2
     x: 0
     y: 0
-  SouthUV:
+    width: 0.03125
+    height: 0.03125
+  m_bottomUV:
+    serializedVersion: 2
     x: 0
     y: 0
-  EastUV:
+    width: 0.03125
+    height: 0.03125
+  m_northUV:
+    serializedVersion: 2
     x: 0
     y: 0
-  WestUV:
+    width: 0.03125
+    height: 0.03125
+  m_southUV:
+    serializedVersion: 2
     x: 0
     y: 0
-  TopUV:
+    width: 0.03125
+    height: 0.03125
+  m_eastUV:
+    serializedVersion: 2
     x: 0
     y: 0
-  BottomUV:
+    width: 0.03125
+    height: 0.03125
+  m_westUV:
+    serializedVersion: 2
     x: 0
     y: 0
+    width: 0.03125
+    height: 0.03125
+  m_topSprite: {fileID: -855298285791758126, guid: f7f977aaf5087474682d2f6d8240d0aa,
+    type: 3}
+  m_bottomSprite: {fileID: -855298285791758126, guid: f7f977aaf5087474682d2f6d8240d0aa,
+    type: 3}
+  m_northSprite: {fileID: -855298285791758126, guid: f7f977aaf5087474682d2f6d8240d0aa,
+    type: 3}
+  m_southSprite: {fileID: -855298285791758126, guid: f7f977aaf5087474682d2f6d8240d0aa,
+    type: 3}
+  m_westSprite: {fileID: -855298285791758126, guid: f7f977aaf5087474682d2f6d8240d0aa,
+    type: 3}
+  m_eastSprite: {fileID: -855298285791758126, guid: f7f977aaf5087474682d2f6d8240d0aa,
+    type: 3}

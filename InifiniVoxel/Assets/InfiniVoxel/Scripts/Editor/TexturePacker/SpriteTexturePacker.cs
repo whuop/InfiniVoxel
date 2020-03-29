@@ -11,7 +11,10 @@ namespace InfiniVoxel.Editor.TexturePacker
 {
     public class SpriteTexturePacker
     {
+        private string m_outputPath = Application.dataPath + "/InfiniVoxel/Generated/";
+        
         private List<Sprite> m_sprites = new List<Sprite>();
+        private List<float2> m_spriteRectMapping = new List<float2>();
         
         public SpriteTexturePacker()
         {
@@ -29,16 +32,19 @@ namespace InfiniVoxel.Editor.TexturePacker
             return m_sprites.Count - 1;
         }
 
+        public float2 GetUVs(int spriteIndex)
+        {
+            return m_spriteRectMapping[spriteIndex];
+        }
+
         public void Pack()
         {
-            Texture2D packedTexture = new Texture2D(512, 512);
-
+            Texture2D packedTexture = new Texture2D(256, 256);
             int2 offset = new int2(0,0);
 
             for (int i = 0; i < m_sprites.Count; i++)
             {
                 Sprite sprite = m_sprites[i];
-
                 int2 newOffset = new int2(offset.x + (int)sprite.textureRect.width,
                                         offset.y + (int)sprite.textureRect.height);
 
@@ -51,16 +57,30 @@ namespace InfiniVoxel.Editor.TexturePacker
                     (int)sprite.textureRect.width, (int)sprite.textureRect.height, 
                     pixels);
 
-                offset.x += newOffset.x;
+
+                float2 tileSize = new float2(packedTexture.width / sprite.textureRect.width,
+                    packedTexture.height / sprite.textureRect.height);
+                float2 tileSizeNormalized = new float2(1.0f / tileSize.x, 1.0f / tileSize.y);
+                Debug.Log("Tile Size: " + tileSizeNormalized);
+                
+                float2 uvPosition = new float2(offset.x / tileSize.x, offset.y / tileSize.y);
+                Debug.Log("UV Position: " + uvPosition);
+                
+                float2 uv = new float2(uvPosition.x * tileSizeNormalized.x, uvPosition.y * tileSizeNormalized.y);
+                Debug.Log("UV: " + uv);
+                
+                m_spriteRectMapping.Add(uv);
+                offset.x = newOffset.x;
             }
             
             SaveTexture(packedTexture);
-            //AssetDatabase.CreateAsset(packedTexture, "Assets/packedTexture.png");
+            //NormalizeUVs();
         }
 
         private void SaveTexture(Texture2D texture)
         {
-            string filePath = Application.dataPath + "/packedTexture.png";
+            Directory.CreateDirectory(m_outputPath);
+            string filePath = m_outputPath + "packedTexture.png";
             Debug.Log("Saving to path: " + filePath);
             byte[] bytes = texture.EncodeToPNG();
             FileStream stream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
@@ -73,6 +93,25 @@ namespace InfiniVoxel.Editor.TexturePacker
             
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }
+
+        private void NormalizeUVs()
+        {
+            string localPath = "Assets/InfiniVoxel/Generated/packedTexture.png";
+            var packedTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(localPath);
+            
+            for (int i = 0; i < m_spriteRectMapping.Count; i++)
+            {
+                float2 uvs = m_spriteRectMapping[i];
+
+                uvs.x = uvs.x / packedTexture.width;
+                uvs.y = uvs.y / packedTexture.height;
+                //uvs.width = uvs.width / packedTexture.width;
+                //uvs.height = uvs.height / packedTexture.height;
+
+                m_spriteRectMapping[i] = uvs;
+            }
+        }
+
     }
 }
 

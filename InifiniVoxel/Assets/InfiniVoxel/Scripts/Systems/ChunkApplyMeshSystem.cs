@@ -43,7 +43,7 @@ namespace InfiniVoxel.Systems
 
                 Vector3[] vertices = new Vector3[vertexBuffer.Length];
                 int[] indices = new int[indexBuffer.Length];
-                Vector2[] uv0 = new Vector2[UV0Buffer.Length];
+                Vector2[] uv0 = new Vector2[UV0Buffer.Length/* * 2*/];
                 
                 NativeArray<float3> colliderVertices = new NativeArray<float3>(vertexBuffer.Length, Allocator.Temp, NativeArrayOptions.UninitializedMemory);
                 NativeArray<int3> colliderIndices = new NativeArray<int3>(indexBuffer.Length / 3, Allocator.Temp, NativeArrayOptions.UninitializedMemory);
@@ -51,6 +51,7 @@ namespace InfiniVoxel.Systems
                 int longest = Mathf.Max(vertices.Length, indices.Length);
                 longest = Mathf.Max(longest, UV0Buffer.Length);
 
+                int l = 0;
                 for(int j = 0; j < longest; j++)
                 {
                     if (j < vertices.Length)
@@ -60,8 +61,13 @@ namespace InfiniVoxel.Systems
                     }
                     if (j < indices.Length)
                         indices[j] = indexBuffer[j].value;
-                    if (j < uv0.Length)
-                        uv0[j] = UV0Buffer[j].Value;
+                    if (j < UV0Buffer.Length)
+                    {
+                        uv0[j] = new Vector2(UV0Buffer[j].Value.x, UV0Buffer[j].Value.y);
+                        //uv0[j] = new Vector2(UV0Buffer[j].Value.width, UV0Buffer[j].Value.height);
+                    }
+
+                    l += 2;
                 }
 
                 var renderMesh = EntityManager.GetSharedComponentData<RenderMesh>(entity);
@@ -91,14 +97,12 @@ namespace InfiniVoxel.Systems
                     };
                 }
 
-                var physicsFilter = Unity.Physics.CollisionFilter.Default;
-
-                var physicsMaterial = Unity.Physics.Material.Default;
+                
                 //  Create physics collider
+                var physicsFilter = Unity.Physics.CollisionFilter.Default;
+                var physicsMaterial = Unity.Physics.Material.Default;
                 var colliders = Unity.Physics.MeshCollider.Create(colliderVertices, colliderIndices, physicsFilter, physicsMaterial);
 
-                
-                
                 if (EntityManager.HasComponent<PhysicsCollider>(entity))
                 {
                     EntityManager.SetComponentData(entity, new PhysicsCollider { Value = colliders });
@@ -111,6 +115,7 @@ namespace InfiniVoxel.Systems
                 EntityManager.SetSharedComponentData(entity, renderMesh);
                 EntityManager.RemoveComponent<ApplyMesh>(entity);
                 
+                //    Clean up native arrays to avoid memory leaks.
                 colliderVertices.Dispose();
                 colliderIndices.Dispose();
                 

@@ -4,6 +4,8 @@ using InfiniVoxel.Components;
 using System.Collections.Generic;
 using InfiniVoxel.ScriptableObjects;
 using InfiniVoxel.Systems;
+using SharpNoise;
+using SharpNoise.Modules;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -83,6 +85,7 @@ namespace InfiniVoxel.MonoBehaviours
             var chunkEntity = CreateChunk(chunkIndex);
             
             InitializeChunkData(chunkEntity);
+            GenerateWorld();
         }
 
         private void OnDestroy()
@@ -96,6 +99,45 @@ namespace InfiniVoxel.MonoBehaviours
             if (!Application.isPlaying)
             {
                 ScriptBehaviourUpdateOrder.UpdatePlayerLoop(m_world);
+            }
+        }
+
+        private void GenerateWorld()
+        {
+            Perlin perlin = new Perlin();
+
+            perlin.Frequency = 0.01;
+            for (int x = 0; x < 128; x++)
+            {
+                for (int z = 0; z < 128; z++)
+                {
+                    int stone = (int)(perlin.GetValue((double)x + 0.1, 0.1, (double)z + 0.1) * 32) + 32;
+                    
+                    //Debug.Log("Stone Height: " + stone);
+                    
+                    
+                    for (int y = 0; y < 64; y++)
+                    {
+
+                        if (y <= stone)
+                        {
+                            PlaceVoxel(x,y,z, new Voxel(){ DatabaseIndex = 1 });
+                        }
+                        else
+                        {
+                            PlaceVoxel(x,y,z, new Voxel(){ DatabaseIndex = 0 });
+                        }
+                        
+                            /*double value = perlin.GetValue((double)x + 0.1, (double)y + 0.1, (double)z + 0.1);
+                            Debug.Log("Value: " + value);
+
+                            if (value < 0.0)
+                            {
+                                PlaceVoxel(x, y, z, Voxel.Null);
+                            }*/
+                        
+                    }
+                }
             }
         }
 

@@ -16,19 +16,60 @@ namespace InfiniVoxel.ScriptableObjects
         {
             get { return m_material; }
         }
+
+        [SerializeField]
+        [HideInInspector]
+        private float2 m_topUV;
+        public float2 TopUV
+        {
+            get { return m_topUV; }
+            set { m_topUV = value; }
+        }
         
         [SerializeField]
-        private float2 NorthUV;
+        [HideInInspector]
+        private float2 m_bottomUV;
+        public float2 BottomUV
+        {
+            get { return m_bottomUV; }
+            set { m_bottomUV = value; }
+        }
+        
         [SerializeField]
-        private float2 SouthUV;
+        [HideInInspector]
+        private float2 m_northUV;
+        public float2 NorthUV
+        {
+            get { return m_northUV; }
+            set { m_northUV = value; }
+        }
+        
         [SerializeField]
-        private float2 EastUV;
+        [HideInInspector]
+        private float2 m_southUV;
+        public float2 SouthUV
+        {
+            get { return m_southUV; }
+            set { m_southUV = value; }
+        }
+        
         [SerializeField]
-        private float2 WestUV;
+        [HideInInspector]
+        private float2 m_eastUV;
+        public float2 EastUV
+        {
+            get { return m_eastUV; }
+            set { m_eastUV = value; }
+        }
+        
         [SerializeField]
-        private float2 TopUV;
-        [SerializeField]
-        private float2 BottomUV;
+        [HideInInspector]
+        private float2 m_westUV;
+        public float2 WestUV
+        {
+            get { return m_westUV; }
+            set { m_westUV = value; }
+        }
 
         [SerializeField]
         private Sprite m_topSprite;
@@ -38,7 +79,7 @@ namespace InfiniVoxel.ScriptableObjects
         public Sprite BottomSprite => m_bottomSprite;
         [SerializeField]
         private Sprite m_northSprite;
-        public Sprite NorthSprite => NorthSprite;
+        public Sprite NorthSprite => m_northSprite;
         [SerializeField]
         private Sprite m_southSprite;
         public Sprite SouthSprite => m_southSprite;

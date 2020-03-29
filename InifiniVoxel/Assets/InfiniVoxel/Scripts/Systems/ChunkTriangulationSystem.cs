@@ -88,9 +88,8 @@ namespace InfiniVoxel.Systems
 
                 }
 
-                //float tileSize = (1.0f / 16.0f);
-                VoxelConcurrent currentVoxel = ConcurrentVoxels[voxel.DatabaseIndex];
-                
+                VoxelConcurrent currentVoxel = ConcurrentVoxels[voxel.DatabaseIndex];             
+
                 for(int i = 0; i < voxelUVs.Length; i++)
                 {
                     float2 uv = float2.zero;
@@ -115,42 +114,7 @@ namespace InfiniVoxel.Systems
                             uv = currentVoxel.SouthUV;
                             break;
                     }
-                    Debug.Log($"Set UV {uv}");
                     voxelUVs[i] = new UV0 { Value = uv };
-                    /*if (voxel.Type == 1)
-                    {
-                        float2 uv = new float2(0, tileSize * 15);
-                        switch(voxel.Side)
-                        {
-                            case TOP:
-                                uv.x = tileSize * 0;
-                                break;
-                            case BOTTOM:
-                                uv.x = tileSize * 2;
-                                break;
-                            case WEST:
-                            case EAST:
-                            case NORTH:
-                            case SOUTH:
-                                uv.x = tileSize * 3;
-                                break;
-                        }
-                        voxelUVs[i] = new UV0 { Value = uv };
-                    }
-                    else if (voxel.Type == 2)
-                    {
-                        float2 uv = new float2(0, tileSize * 15 );
-                        voxelUVs[i] = new UV0 { Value = uv };
-                    }
-                    else if (voxel.Type == 3)
-                    {
-                        float2 uv = new float2(0, 0);
-                        voxelUVs[i] = new UV0 { Value = uv };
-                    }
-                    else
-                    {
-                        voxelUVs[i] = new UV0 { Value = new float2(0, 0) };
-                    }*/
                 }
 
                 vertices.AddRange(voxelVertices);

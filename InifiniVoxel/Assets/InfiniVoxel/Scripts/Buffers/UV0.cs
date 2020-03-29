@@ -8,7 +8,7 @@ namespace InfiniVoxel.Buffers
 {
     public struct UV0 : IBufferElementData
     {
-        public float2 Value;
+        public Vector2 Value;
     }
 }
 
