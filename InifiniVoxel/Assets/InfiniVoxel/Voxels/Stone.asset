@@ -17,19 +17,19 @@ MonoBehaviour:
   m_material: {fileID: 2100000, guid: e98d61d781e8f0a41844546250cf0439, type: 2}
   NorthUV:
     x: 0
-    y: 0.0625
+    y: 0.9375
   SouthUV:
     x: 0
-    y: 0.0625
+    y: 0.9375
   EastUV:
     x: 0
-    y: 0.0625
+    y: 0.9375
   WestUV:
     x: 0
-    y: 0.0625
+    y: 0.9375
   TopUV:
     x: 0
-    y: 0.0625
+    y: 0.9375
   BottomUV:
     x: 0
-    y: 0.0625
+    y: 0.9375

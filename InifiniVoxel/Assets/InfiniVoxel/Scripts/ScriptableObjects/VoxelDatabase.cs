@@ -22,6 +22,17 @@ namespace InfiniVoxel.ScriptableObjects
             Debug.Log($"Awoke Voxel Database");
         }
 
+        public int GetIndexFromVoxel(VoxelData data)
+        {
+            for (int i = 0; i < m_voxels.Count; i++)
+            {
+                if (data == m_voxels[i])
+                    return i;
+            }
+
+            return -1;
+        }
+
         private void CreateConcurrentVoxels()
         {
             m_concurrentVoxels = new NativeArray<VoxelConcurrent>(m_voxels.Count, Allocator.Persistent);
@@ -29,6 +40,11 @@ namespace InfiniVoxel.ScriptableObjects
             {
                 m_concurrentVoxels[i] = m_voxels[i].ToVoxel();
             }
+        }
+
+        public List<VoxelData> GetVoxels()
+        {
+            return m_voxels;
         }
 
         public NativeArray<VoxelConcurrent> GetConcurrentVoxels()

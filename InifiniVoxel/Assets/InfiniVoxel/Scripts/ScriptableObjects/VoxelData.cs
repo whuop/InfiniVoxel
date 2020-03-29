@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using InfiniVoxel.Buffers;
-using Unity.Mathematics;
+﻿using Unity.Mathematics;
 using UnityEngine;
 
 namespace InfiniVoxel.ScriptableObjects
@@ -15,6 +12,10 @@ namespace InfiniVoxel.ScriptableObjects
         private int m_type;
         [SerializeField]
         private Material m_material;
+        public Material Material
+        {
+            get { return m_material; }
+        }
         
         [SerializeField]
         private float2 NorthUV;
@@ -28,6 +29,26 @@ namespace InfiniVoxel.ScriptableObjects
         private float2 TopUV;
         [SerializeField]
         private float2 BottomUV;
+
+        [SerializeField]
+        private Sprite m_topSprite;
+        public Sprite TopSprite => m_topSprite;
+        [SerializeField]
+        private Sprite m_bottomSprite;
+        public Sprite BottomSprite => m_bottomSprite;
+        [SerializeField]
+        private Sprite m_northSprite;
+        public Sprite NorthSprite => NorthSprite;
+        [SerializeField]
+        private Sprite m_southSprite;
+        public Sprite SouthSprite => m_southSprite;
+        [SerializeField] 
+        private Sprite m_westSprite;
+        public Sprite WestSprite => m_westSprite;
+        [SerializeField]
+        private Sprite m_eastSprite;
+        public Sprite EastSprite => m_eastSprite;
+        
         
         public VoxelConcurrent ToVoxel()
         {

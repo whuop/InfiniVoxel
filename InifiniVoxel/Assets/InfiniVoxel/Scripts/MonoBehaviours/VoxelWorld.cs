@@ -14,11 +14,15 @@ using UnityEngine;
 
 namespace InfiniVoxel.MonoBehaviours
 {
-    
+    //[ExecuteInEditMode]
     public class VoxelWorld : MonoBehaviour
     {
         [SerializeField]
         private VoxelDatabase m_voxelDatabase;
+        public VoxelDatabase VoxelDatabase
+        {
+            get { return m_voxelDatabase; }
+        }
         [SerializeField]
         private int m_chunkWidth = 16;
         [SerializeField]
@@ -49,7 +53,17 @@ namespace InfiniVoxel.MonoBehaviours
         private void Awake()
         {
             m_emptyChunk = new NativeArray<Voxel>(m_chunkWidth * m_chunkHeight * m_chunkDepth, Allocator.Persistent, NativeArrayOptions.ClearMemory);
-            m_world = World.All[0];
+
+            if (!Application.isPlaying)
+            {
+                DefaultWorldInitialization.DefaultLazyEditModeInitialize();
+                m_world = World.All[0];
+            }
+            else
+            {
+                m_world = World.All[0];
+            }
+            
         }
 
         // Start is called before the first frame update
@@ -75,6 +89,14 @@ namespace InfiniVoxel.MonoBehaviours
         {
             //    Destroy all persistent native arrays to avoid memory leaks.
             m_emptyChunk.Dispose();
+        }
+
+        private void Update()
+        {
+            if (!Application.isPlaying)
+            {
+                ScriptBehaviourUpdateOrder.UpdatePlayerLoop(m_world);
+            }
         }
 
         public void CreateFromVoxelArray(Voxel[] voxels, Texture2D materialTexture, int chunkWidth, int chunkHeight, int chunkDepth)
@@ -159,8 +181,7 @@ namespace InfiniVoxel.MonoBehaviours
         {
             if (m_createdChunks.ContainsKey(index))
             {
-                Debug.LogError("Could not create chunk with index: " + index.X + "/" + index.Y + "/" + index.Z);
-                return default(Entity);
+                return m_createdChunks[index];
             }
 
             var entityManager = m_world.EntityManager;

@@ -33,3 +33,9 @@ MonoBehaviour:
   BottomUV:
     x: 0.0625
     y: 0.0625
+  m_topSprite: {fileID: 0}
+  m_bottomSprite: {fileID: 0}
+  m_northSprite: {fileID: 0}
+  m_southSprite: {fileID: 0}
+  m_westSprite: {fileID: 0}
+  m_eastSprite: {fileID: 0}
