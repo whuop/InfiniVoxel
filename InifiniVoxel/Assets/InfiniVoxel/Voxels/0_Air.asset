@@ -16,41 +16,23 @@ MonoBehaviour:
   m_type: 0
   m_material: {fileID: 2100000, guid: e98d61d781e8f0a41844546250cf0439, type: 2}
   m_topUV:
-    serializedVersion: 2
     x: 0
     y: 0
-    width: 0.03125
-    height: 0.03125
   m_bottomUV:
-    serializedVersion: 2
     x: 0
     y: 0
-    width: 0.03125
-    height: 0.03125
   m_northUV:
-    serializedVersion: 2
     x: 0
     y: 0
-    width: 0.03125
-    height: 0.03125
   m_southUV:
-    serializedVersion: 2
     x: 0
     y: 0
-    width: 0.03125
-    height: 0.03125
   m_eastUV:
-    serializedVersion: 2
     x: 0
     y: 0
-    width: 0.03125
-    height: 0.03125
   m_westUV:
-    serializedVersion: 2
     x: 0
     y: 0
-    width: 0.03125
-    height: 0.03125
   m_topSprite: {fileID: -855298285791758126, guid: f7f977aaf5087474682d2f6d8240d0aa,
     type: 3}
   m_bottomSprite: {fileID: -855298285791758126, guid: f7f977aaf5087474682d2f6d8240d0aa,

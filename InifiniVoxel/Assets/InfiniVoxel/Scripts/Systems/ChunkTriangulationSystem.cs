@@ -408,8 +408,19 @@ namespace InfiniVoxel.Systems
             m_barrier = this.World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
         }
 
+        private JobHandle m_handle;
+
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
+            /*if (m_handle.IsCompleted)
+            {
+                m_handle.Complete();
+            }
+            else
+            {
+                return inputDeps;
+            }*/
+            
             var entityType = GetArchetypeChunkEntityType();
             var voxelType = GetArchetypeChunkBufferType<Voxel>(true);
             var scaleType = GetArchetypeChunkComponentType<ChunkScale>(true);
@@ -429,9 +440,10 @@ namespace InfiniVoxel.Systems
             execJob.VertexType = vertexType;
             execJob.IndexType = indexType;
             execJob.UV0Type = uv0Type;
+            //m_handle = execJob.Schedule(m_entityQuery, inputDeps);
             var handle = execJob.Schedule(m_entityQuery, inputDeps);
             m_barrier.AddJobHandleForProducer(handle);
-
+            //return inputDeps;
             return handle;
         }
     }

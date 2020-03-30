@@ -69,6 +69,7 @@
      <Compile Include="Assets\InfiniVoxel\Scripts\ScriptableObjects\VoxelMesh.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\ScriptableObjects\VoxelPalette.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\ScriptableObjects\WorldGenerator.cs" />
+     <Compile Include="Assets\InfiniVoxel\Scripts\SpatialChunkLoader.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\Systems\ChunkApplyMeshGameObjectSystem.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\Systems\ChunkApplyMeshSystem.cs" />
      <Compile Include="Assets\InfiniVoxel\Scripts\Systems\ChunkGameObjectPoolSystem.cs" />

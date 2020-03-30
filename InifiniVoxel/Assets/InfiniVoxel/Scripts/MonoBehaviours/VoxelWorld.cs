@@ -2,6 +2,7 @@
 using InfiniVoxel.Buffers;
 using InfiniVoxel.Components;
 using System.Collections.Generic;
+using System.Linq;
 using InfiniVoxel.ScriptableObjects;
 using InfiniVoxel.Systems;
 using SharpNoise;
@@ -27,10 +28,23 @@ namespace InfiniVoxel.MonoBehaviours
         }
         [SerializeField]
         private int m_chunkWidth = 16;
+        public int ChunkWidth
+        {
+            get { return m_chunkWidth; }
+        }
         [SerializeField]
         private int m_chunkHeight = 16;
+        public int ChunkHeight
+        {
+            get { return m_chunkHeight; }
+        }
         [SerializeField]
         private int m_chunkDepth = 16;
+        public int ChunkDepth
+        {
+            get { return m_chunkDepth; }
+        }
+        
         [SerializeField]
         private bool m_receiveShadows = true;
         [SerializeField]
@@ -81,12 +95,6 @@ namespace InfiniVoxel.MonoBehaviours
             CHUNK_DEPTH = m_chunkDepth;
 
             InitializeEmptyVoxelBuffer();
-            
-            var chunkIndex = new ChunkIndex { X = 0, Y = 0, Z = 0 };
-            var chunkEntity = CreateChunk(chunkIndex);
-            
-            InitializeChunkData(chunkEntity);
-            GenerateWorld();
         }
 
         private void OnDestroy()
@@ -149,6 +157,77 @@ namespace InfiniVoxel.MonoBehaviours
             }
         }
 
+        public void LoadChunk(ChunkIndex chunkIndex)
+        {
+            if (m_createdChunks.ContainsKey(chunkIndex))
+                return;
+            
+            Entity chunkEntity = CreateChunk(chunkIndex, false);
+
+            var voxels = m_world.EntityManager.GetBuffer<Voxel>(chunkEntity);
+
+            float cX = (float) (chunkIndex.X * ChunkWidth);
+            float cY = (float) (chunkIndex.Y * ChunkHeight);
+            float cZ = (float) (chunkIndex.Z * ChunkDepth);
+            
+            Perlin perlin = new Perlin();
+            Perlin dirtPerlin = new Perlin();
+            
+            perlin.Frequency = 0.01;
+
+            dirtPerlin.Frequency = 0.001;
+            dirtPerlin.Seed = 5;
+            
+            for (int x = 0; x < ChunkWidth; x++)
+            {
+                for (int z = 0; z < ChunkDepth; z++)
+                {
+                    //    Position used for data generation
+                    float3 voxelPos = new float3(
+                        cX + x + 0.01f,
+                        1.01f,
+                        cZ + z + 0.01f
+                        );
+                    
+                    
+                    int stone = (int)(perlin.GetValue((double)voxelPos.x, 0.1, (double)voxelPos.z) * 6) + 6;
+                    int dirt = (int) (dirtPerlin.GetValue((double)voxelPos.x, 0.1, (double)voxelPos.z) * 6) + 6;
+
+                    bool lastDirt = true;
+                    
+                    for (int y = 0; y < ChunkHeight; y++)
+                    {
+                        int flatIndex = IndexUtils.ToFlatIndex(x, y, z, ChunkWidth, ChunkDepth);
+                        
+                        if (y <= stone)
+                        {
+                            lastDirt = false;
+                            m_emptyChunk[flatIndex] = new Voxel() { DatabaseIndex = 3 };
+                        }
+                        else if (y <= dirt)
+                        {
+                            lastDirt = true;
+                            m_emptyChunk[flatIndex] = new Voxel() { DatabaseIndex = 1 };
+                        }
+                        else
+                        {
+                            if (lastDirt)
+                            {
+                                m_emptyChunk[flatIndex] = new Voxel() { DatabaseIndex = 2 };
+                            }
+                            m_emptyChunk[flatIndex] = new Voxel() { DatabaseIndex = 0 };
+                            lastDirt = false;
+                        }
+                    }
+                }
+            }
+            
+            voxels.AddRange(m_emptyChunk);
+            if (!m_world.EntityManager.HasComponent<TriangulateChunk>(chunkEntity))
+                m_world.EntityManager.AddComponentData(chunkEntity, new TriangulateChunk());
+        }
+        
+
         public void CreateFromVoxelArray(Voxel[] voxels, Texture2D materialTexture, int chunkWidth, int chunkHeight, int chunkDepth)
         {
             CHUNK_WIDTH = chunkWidth;
@@ -210,7 +289,7 @@ namespace InfiniVoxel.MonoBehaviours
                 entityManager.AddComponentData(entity, new TriangulateChunk());
         }
 
-        public Entity CreateChunk(ChunkIndex index)
+        public Entity CreateChunk(ChunkIndex index, bool initializeWithEmptyChunk = true)
         {
             if (m_createdChunks.ContainsKey(index))
             {
@@ -230,9 +309,12 @@ namespace InfiniVoxel.MonoBehaviours
             entityManager.AddComponentData(entity, index);
             entityManager.AddComponentData(entity, new ChunkScale { Value = m_voxelScale });
 
-            var voxelBuffer = entityManager.GetBuffer<Voxel>(entity);
-            voxelBuffer.AddRange(m_emptyChunk);
-
+            if (initializeWithEmptyChunk)
+            {
+                var voxelBuffer = entityManager.GetBuffer<Voxel>(entity);
+                voxelBuffer.AddRange(m_emptyChunk);
+            }
+            
             //  Calculate world position for chunk, based on chunk index (pos clamped to chunk values), num voxels in each dimension and the scale of each voxel.
             float3 pos = new float3
             {
@@ -242,14 +324,6 @@ namespace InfiniVoxel.MonoBehaviours
             };
 
             entityManager.AddComponentData(entity, new Translation { Value = pos });
-            //entityManager.AddComponentData(entity, new LocalToWorld { Value = float4x4.identity });
-            //entityManager.AddComponentData(entity, new Rotation { Value = quaternion.identity });
-
-
-            //  Create the renderer
-            //entityManager.AddSharedComponentData(entity, new RenderMesh { castShadows = m_shadowCastingMode, layer = 0, receiveShadows = m_receiveShadows, subMesh = m_subMesh, material = m_chunkMaterial, mesh = new UnityEngine.Mesh() });
-            //var aabb = new AABB() { Center = pos, Extents = new float3(100, 100, 100)};
-            //entityManager.AddComponentData(entity, new RenderBounds() { Value = aabb});
             return entity;
         }
 

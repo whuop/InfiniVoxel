@@ -59,6 +59,7 @@
               <e p="VoxelPalette.cs" t="Include" />
               <e p="WorldGenerator.cs" t="Include" />
             </e>
+            <e p="SpatialChunkLoader.cs" t="Include" />
             <e p="Systems" t="Include">
               <e p="ChunkApplyMeshGameObjectSystem.cs" t="Include" />
               <e p="ChunkApplyMeshSystem.cs" t="Include" />

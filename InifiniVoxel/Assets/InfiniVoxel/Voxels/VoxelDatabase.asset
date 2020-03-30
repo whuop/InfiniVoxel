@@ -15,4 +15,5 @@ MonoBehaviour:
   m_voxels:
   - {fileID: 11400000, guid: 3bb3369aca39a6f4e833f832c3506e73, type: 2}
   - {fileID: 11400000, guid: 599e4359912a67944a70edfd5ffc684d, type: 2}
+  - {fileID: 11400000, guid: c85cc5162544dc4469c65ec56f4ba095, type: 2}
   - {fileID: 11400000, guid: 8a8cfcb50dcf92d41b63d5144ebdb348, type: 2}
