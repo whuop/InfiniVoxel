@@ -390,14 +390,37 @@ namespace InfiniVoxel.Systems
         }
 
         private EntityQuery m_entityQuery;
-        private EndSimulationEntityCommandBufferSystem m_barrier;
-
+        private EntityCommandBuffer m_commandBuffer;
+        
         private VoxelDatabase m_voxelDatabase;
         public VoxelDatabase VoxelDatabase
         {
             get { return m_voxelDatabase; }
             set { m_voxelDatabase = value; }
         }
+
+        private int m_chunkWidth;
+        public int ChunkWidth
+        {
+            get { return m_chunkWidth; }
+            set { m_chunkWidth = value; }
+        }
+
+        private int m_chunkHeight;
+        public int ChunkHeight
+        {
+            get { return m_chunkHeight; }
+            set { m_chunkHeight = value; }
+        }
+
+        private int m_chunkDepth;
+        public int ChunkDepth
+        {
+            get { return m_chunkDepth; }
+            set { m_chunkDepth = value; }
+        }
+
+        private bool m_startedJob = false;
         
         protected override void OnCreate()
         {
@@ -405,21 +428,32 @@ namespace InfiniVoxel.Systems
             m_entityQuery = GetEntityQuery(ComponentType.ReadOnly<ChunkIndex>(), ComponentType.ReadOnly<Voxel>(), ComponentType.ReadWrite<TriangulateChunk>(),
                 ComponentType.ReadWrite<Vertex>(), ComponentType.ReadWrite<Index>(), ComponentType.ReadWrite<Buffers.Color>(), ComponentType.Exclude<ApplyMesh>());
             
-            m_barrier = this.World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+            m_commandBuffer = new EntityCommandBuffer(Allocator.Persistent);
         }
 
         private JobHandle m_handle;
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
-            /*if (m_handle.IsCompleted)
+            if (m_handle.IsCompleted && m_startedJob)
             {
                 m_handle.Complete();
+                
+                m_commandBuffer.Playback(World.EntityManager);
+                m_commandBuffer.Dispose();
+
+                m_startedJob = false;
             }
-            else
+            else if (!m_handle.IsCompleted && m_startedJob)
             {
                 return inputDeps;
-            }*/
+            }
+
+            int numEntitiesLeft = m_entityQuery.CalculateEntityCount();
+            if (numEntitiesLeft == 0)
+                return inputDeps;
+
+            m_commandBuffer = new EntityCommandBuffer(Allocator.TempJob);
             
             var entityType = GetArchetypeChunkEntityType();
             var voxelType = GetArchetypeChunkBufferType<Voxel>(true);
@@ -428,23 +462,23 @@ namespace InfiniVoxel.Systems
             var indexType = GetArchetypeChunkBufferType<Index>();
             var uv0Type = GetArchetypeChunkBufferType<UV0>();
 
+            Debug.Log("Num Entities Left: " + numEntitiesLeft);
+
             var execJob = new Job();
-            execJob.CommandBuffer = m_barrier.CreateCommandBuffer().ToConcurrent();
+            execJob.CommandBuffer = m_commandBuffer.ToConcurrent();
             execJob.ConcurrentVoxels = m_voxelDatabase.GetConcurrentVoxels();
             execJob.EntityType = entityType;
             execJob.VoxelType = voxelType;
             execJob.ChunkScaleType = scaleType;
-            execJob.ChunkHeight = 16;
-            execJob.ChunkWidth = 16;
-            execJob.ChunkDepth = 16;
+            execJob.ChunkHeight = ChunkWidth;
+            execJob.ChunkWidth = ChunkWidth;
+            execJob.ChunkDepth = ChunkDepth;
             execJob.VertexType = vertexType;
             execJob.IndexType = indexType;
             execJob.UV0Type = uv0Type;
-            //m_handle = execJob.Schedule(m_entityQuery, inputDeps);
-            var handle = execJob.Schedule(m_entityQuery, inputDeps);
-            m_barrier.AddJobHandleForProducer(handle);
-            //return inputDeps;
-            return handle;
+            m_handle = execJob.Schedule(m_entityQuery, inputDeps);
+            m_startedJob = true;
+            return inputDeps;
         }
     }
 

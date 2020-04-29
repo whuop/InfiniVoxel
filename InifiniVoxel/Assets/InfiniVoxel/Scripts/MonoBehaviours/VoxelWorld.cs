@@ -22,6 +22,9 @@ namespace InfiniVoxel.MonoBehaviours
     {
         [SerializeField]
         private VoxelDatabase m_voxelDatabase;
+        [SerializeField]
+        private WorldGenerator m_worldGenerator;
+
         public VoxelDatabase VoxelDatabase
         {
             get { return m_voxelDatabase; }
@@ -64,35 +67,36 @@ namespace InfiniVoxel.MonoBehaviours
 
         private NativeArray<Voxel> m_emptyChunk;
 
-        private World m_world;
+        private World m_voxelWorld;
+        private ChunkTriangulationSystem m_chunkTriangulationSystem;
+        private ChunkApplyMeshGameObjectSystem m_chunkApplyMeshSystem;
+
+        private List<ComponentSystemBase> m_systemsToUpdate = new List<ComponentSystemBase>();
 
         private void Awake()
         {
             m_emptyChunk = new NativeArray<Voxel>(m_chunkWidth * m_chunkHeight * m_chunkDepth, Allocator.Persistent, NativeArrayOptions.ClearMemory);
 
-            if (!Application.isPlaying)
-            {
-                DefaultWorldInitialization.DefaultLazyEditModeInitialize();
-                m_world = World.All[0];
-            }
-            else
-            {
-                m_world = World.All[0];
-            }
-            
         }
 
         // Start is called before the first frame update
         void Start()
         {
-            m_voxelDatabase.Initialize();
+            m_voxelWorld = new World("VoxelWorld");
+            m_chunkTriangulationSystem = m_voxelWorld.CreateSystem<ChunkTriangulationSystem>();
+            m_chunkApplyMeshSystem = m_voxelWorld.CreateSystem<ChunkApplyMeshGameObjectSystem>();
+            m_chunkApplyMeshSystem.ChunkMaterial = m_chunkMaterial;
 
-            m_world.GetOrCreateSystem<ChunkTriangulationSystem>().VoxelDatabase = m_voxelDatabase;
-            m_world.GetOrCreateSystem<ChunkApplyMeshGameObjectSystem>().ChunkMaterial = m_chunkMaterial;
-            
+            m_voxelDatabase.Initialize();
+            m_chunkTriangulationSystem.VoxelDatabase = m_voxelDatabase;
+
             CHUNK_WIDTH = m_chunkWidth;
             CHUNK_HEIGHT = m_chunkHeight;
             CHUNK_DEPTH = m_chunkDepth;
+
+            m_chunkTriangulationSystem.ChunkWidth = m_chunkWidth;
+            m_chunkTriangulationSystem.ChunkHeight = m_chunkHeight;
+            m_chunkTriangulationSystem.ChunkDepth = m_chunkDepth;
 
             InitializeEmptyVoxelBuffer();
         }
@@ -105,10 +109,8 @@ namespace InfiniVoxel.MonoBehaviours
 
         private void Update()
         {
-            if (!Application.isPlaying)
-            {
-                ScriptBehaviourUpdateOrder.UpdatePlayerLoop(m_world);
-            }
+            m_chunkTriangulationSystem.Update();
+            m_chunkApplyMeshSystem.Update();
         }
 
         private void GenerateWorld()
@@ -164,7 +166,7 @@ namespace InfiniVoxel.MonoBehaviours
             
             Entity chunkEntity = CreateChunk(chunkIndex, false);
 
-            var voxels = m_world.EntityManager.GetBuffer<Voxel>(chunkEntity);
+            var voxels = m_voxelWorld.EntityManager.GetBuffer<Voxel>(chunkEntity);
 
             float cX = (float) (chunkIndex.X * ChunkWidth);
             float cY = (float) (chunkIndex.Y * ChunkHeight);
@@ -223,35 +225,10 @@ namespace InfiniVoxel.MonoBehaviours
             }
             
             voxels.AddRange(m_emptyChunk);
-            if (!m_world.EntityManager.HasComponent<TriangulateChunk>(chunkEntity))
-                m_world.EntityManager.AddComponentData(chunkEntity, new TriangulateChunk());
+            if (!m_voxelWorld.EntityManager.HasComponent<TriangulateChunk>(chunkEntity))
+                m_voxelWorld.EntityManager.AddComponentData(chunkEntity, new TriangulateChunk());
         }
         
-
-        public void CreateFromVoxelArray(Voxel[] voxels, Texture2D materialTexture, int chunkWidth, int chunkHeight, int chunkDepth)
-        {
-            CHUNK_WIDTH = chunkWidth;
-            CHUNK_HEIGHT = chunkHeight;
-            CHUNK_DEPTH = chunkDepth;
-
-            m_chunkWidth = chunkWidth;
-            m_chunkHeight = chunkHeight;
-            m_chunkDepth = chunkDepth;
-
-            for(int x = 0; x < chunkWidth; x++)
-            {
-                for(int y = 0; y < chunkHeight; y++)
-                {
-                    for(int z = 0; z < chunkDepth; z++)
-                    {
-                        int flatIndex = IndexUtils.ToFlatIndex(x, y, z, m_chunkWidth, m_chunkDepth);
-
-                        PlaceVoxel(x, y, z, voxels[flatIndex]);
-                    }
-                }
-            }
-        }
-
         private void InitializeEmptyVoxelBuffer()
         {
             m_emptyChunk = new NativeArray<Voxel>(m_chunkWidth * m_chunkHeight * m_chunkWidth, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
@@ -270,7 +247,7 @@ namespace InfiniVoxel.MonoBehaviours
 
         public void InitializeChunkData(Entity entity)
         {
-            var entityManager = m_world.EntityManager;
+            var entityManager = m_voxelWorld.EntityManager;
             var voxels = entityManager.GetBuffer<Voxel>(entity);
             //  Set up voxel test data
             for (int x = 0; x < m_chunkWidth; x++)
@@ -296,7 +273,7 @@ namespace InfiniVoxel.MonoBehaviours
                 return m_createdChunks[index];
             }
 
-            var entityManager = m_world.EntityManager;
+            var entityManager = m_voxelWorld.EntityManager;
             var entity = entityManager.CreateEntity();
             m_createdChunks.Add(index, entity);
             entityManager.SetName(entity, string.Format("Chunk_{0}_{1}_{2}", index.X, index.Y, index.Z));
@@ -329,7 +306,7 @@ namespace InfiniVoxel.MonoBehaviours
 
         public void PlaceVoxel(int x, int y, int z, Voxel voxel)
         {
-            var world = m_world;
+            var world = m_voxelWorld;
             if (world == null)
             {
                 Debug.LogError("Could not PlaceVoxel, no active ECS World found!");
@@ -370,7 +347,7 @@ namespace InfiniVoxel.MonoBehaviours
 
         public void PlaceVoxel(float3 worldPosition, Voxel voxel)
         {
-            var world = m_world;
+            var world = m_voxelWorld;
             if (world == null)
             {
                 Debug.LogError("Could not PlaceVoxel, no active ECS World found!");

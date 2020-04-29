@@ -96,8 +96,11 @@ namespace InfiniVoxel.Systems
                 
                 EntityManager.RemoveComponent<ApplyMeshGameObject>(entity);
             }
+            
+            
             entities.Dispose();
             positions.Dispose();
+            
         }
     }
 

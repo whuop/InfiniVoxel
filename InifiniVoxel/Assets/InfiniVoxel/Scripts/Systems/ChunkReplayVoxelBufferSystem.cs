@@ -63,7 +63,7 @@ namespace InfiniVoxel.Systems
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
-            var entities = GetArchetypeChunkEntityType();
+            /*var entities = GetArchetypeChunkEntityType();
             var voxelType = GetArchetypeChunkBufferType<Voxel>(false);
             var chunkModificationType = GetArchetypeChunkBufferType<ChunkModification>(false);
 
@@ -78,7 +78,8 @@ namespace InfiniVoxel.Systems
 
             var handle = job.Schedule(m_entityQuery, inputDeps);
             m_barrier.AddJobHandleForProducer(handle);
-            return handle;
+            return handle;*/
+            return inputDeps;
         }
     }
 }
